@@ -7,6 +7,7 @@ export * from "./admin/RuanganPage";
 export * from "./auth/LoginPendaftarPage";
 export * from "./auth/LoginAdminPage";
 export * from "./auth/RegisterPendaftarPage";
+export * from "./auth/RegisterSuksesPage";
 
 export * from "./pendaftar/HomePage";
 export * from "./pendaftar/KartuUjianPage";

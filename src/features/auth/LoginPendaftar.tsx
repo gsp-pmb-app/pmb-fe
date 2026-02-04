@@ -1,7 +1,20 @@
 import { useState } from "react";
 import Input from "../../components/Input";
+import {
+  useAppDispatch,
+  loginPendaftar,
+  useAppSelector,
+  selectAuthLoading,
+} from "../../stores";
+import { Link, useNavigate } from "react-router-dom";
+import { Button } from "@headlessui/react";
+import LoadingSpinner from "../../components/Spinner";
 
 export const LoginPendaftar = () => {
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  const loading = useAppSelector(selectAuthLoading);
+
   const [form, setForm] = useState({
     nomor_pendaftaran: "",
     kode_akses: "",
@@ -14,14 +27,21 @@ export const LoginPendaftar = () => {
     });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log(form);
-    // TODO: call API login pendaftar
+
+    try {
+      const result = await dispatch(loginPendaftar(form)).unwrap();
+      navigate(result.role ? "/dashboard" : "/home");
+    } catch (error) {
+      console.error("Login failed:", error);
+    }
   };
 
+  const disableButton = !form.nomor_pendaftaran || !form.kode_akses || loading;
+
   return (
-    <div className="w-screen h-screen flex items-center justify-center bg-gray-50">
+    <div className="w-full max-w-md flex items-center justify-center bg-gray-50">
       <form
         onSubmit={handleSubmit}
         className="w-full max-w-md bg-white p-6 rounded-lg shadow"
@@ -52,12 +72,31 @@ export const LoginPendaftar = () => {
           />
         </div>
 
-        <button
+        <Button
+          disabled={disableButton}
           type="submit"
-          className="mt-6 w-full rounded-md bg-indigo-600 px-4 py-2 text-white font-medium hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          className="mt-6 w-full rounded-md bg-indigo-600 px-4 py-2 text-white font-medium hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 disabled:opacity-50 flex justify-center items-center"
         >
-          Login
-        </button>
+          {loading ? <LoadingSpinner /> : "Login"}
+        </Button>
+
+        <div className="mt-4 text-center flex flex-col gap-1">
+          <p className="text-sm text-gray-500">
+            Belum punya akun?{" "}
+            <Link
+              to="/auth/register"
+              className="text-indigo-600 hover:underline"
+            >
+              Daftar
+            </Link>
+          </p>
+          <Link
+            to="/auth/login-admin"
+            className="text-sm text-indigo-600 hover:underline"
+          >
+            Login Admin / Staff
+          </Link>
+        </div>
       </form>
     </div>
   );

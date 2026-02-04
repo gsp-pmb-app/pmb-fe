@@ -1,6 +1,7 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 import PublicRoute from "./PublicRoute";
 import PrivateRoute from "./PrivateRoute";
+import AuthLayout from "../components/layout/AuthLayout";
 
 import {
   Home,
@@ -12,6 +13,7 @@ import {
   Pendaftar,
   Prodi,
   RegisterPendaftar,
+  RegisterSukses,
   Ruangan,
   StatusKelulusan,
   Verifikasi,
@@ -22,15 +24,18 @@ export default function AppRoutes() {
     <Routes>
       {/* ===== PUBLIC ===== */}
       <Route element={<PublicRoute />}>
-        <Route path="/auth/login-admin" element={<LoginAdmin />} />
-        <Route path="/auth/login" element={<LoginPendaftar />} />
-        <Route path="/auth/register" element={<RegisterPendaftar />} />
+        <Route element={<AuthLayout />}>
+          <Route path="/auth/login" element={<LoginPendaftar />} />
+          <Route path="/auth/login-admin" element={<LoginAdmin />} />
+          <Route path="/auth/register" element={<RegisterPendaftar />} />
+        </Route>
+        <Route path="/auth/register-sukses" element={<RegisterSukses />} />
       </Route>
 
       {/* ===== PRIVATE ===== */}
       <Route element={<PrivateRoute />}>
         {/* pendaftar */}
-        <Route path="/pendaftar" element={<Home />} />
+        <Route path="/home" element={<Home />} />
         <Route path="/pendaftar/kartu-ujian" element={<KartuUjian />} />
         <Route path="/pendaftar/status" element={<StatusKelulusan />} />
 
