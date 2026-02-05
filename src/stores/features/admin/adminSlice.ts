@@ -51,25 +51,31 @@ export const getProdi = createAsyncThunk(
 
 // UPDATE PRODI
 export const updateProdi = createAsyncThunk(
-  'admin/updateProdi',
+  "admin/updateProdi",
   async (
-    { id, payload }: { id: number; payload: any },
+    { id, nama_prodi, jenjang }: {
+      id: number;
+      nama_prodi: string;
+      jenjang: string;
+    },
     { rejectWithValue },
   ) => {
     try {
       const res = await axios.put(
         `${API_URL}/admin/prodi/${id}`,
-        payload,
+        { nama_prodi, jenjang },
         getAuthHeader(),
       );
-      toast.success(res.data?.msg || 'Prodi berhasil diupdate');
-      return { id, payload };
+
+      toast.success(res.data?.msg || "Prodi berhasil diupdate");
+      return { id, nama_prodi, jenjang };
     } catch (error: any) {
-      toast.error(error.response?.data?.msg || 'Gagal update prodi');
+      toast.error(error.response?.data?.msg || "Gagal update prodi");
       return rejectWithValue(error.response?.data?.msg);
     }
   },
 );
+
 
 // DELETE PRODI
 export const deleteProdi = createAsyncThunk(

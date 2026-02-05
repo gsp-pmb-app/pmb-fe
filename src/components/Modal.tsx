@@ -9,6 +9,7 @@ interface ModalProps {
   confirmText?: string;
   cancelText?: string;
   loading?: boolean;
+  confirmDisabled?: boolean;
 }
 
 const Modal: React.FC<ModalProps> = ({
@@ -20,6 +21,7 @@ const Modal: React.FC<ModalProps> = ({
   confirmText = "Simpan",
   cancelText = "Batal",
   loading = false,
+  confirmDisabled = false,
 }) => {
   if (!open) return null;
 
@@ -29,21 +31,21 @@ const Modal: React.FC<ModalProps> = ({
       <div className="absolute inset-0 bg-black/30" onClick={onClose} />
 
       {/* Modal box */}
-      <div className="relative w-full max-w-md rounded-md bg-white shadow-lg">
+      <div className="relative w-full max-w-md rounded-md bg-white shadow-lg px-4">
         {/* Header */}
-        <div className="border-b px-4 py-3">
+        <div className="border-b border-gray-300 py-3">
           <h2 className="text-sm font-semibold text-gray-900">{title}</h2>
         </div>
 
         {/* Body */}
-        <div className="px-4 py-4 text-sm text-gray-700">{children}</div>
+        <div className="py-4 text-sm text-gray-700">{children}</div>
 
         {/* Footer */}
-        <div className="flex justify-end gap-2 border-t px-4 py-3">
+        <div className="flex justify-end gap-2 border-t border-gray-300 py-3">
           <button
             type="button"
             onClick={onClose}
-            className="rounded-md px-3 py-1.5 text-sm text-gray-700 hover:bg-gray-100"
+            className="rounded-md px-4 py-1.5 text-sm text-gray-700 hover:bg-gray-100"
             disabled={loading}
           >
             {cancelText}
@@ -53,7 +55,7 @@ const Modal: React.FC<ModalProps> = ({
             <button
               type="button"
               onClick={onConfirm}
-              disabled={loading}
+              disabled={loading || confirmDisabled}
               className="rounded-md bg-indigo-600 px-4 py-1.5 text-sm font-semibold text-white hover:bg-indigo-500 disabled:opacity-50"
             >
               {loading ? "Menyimpan..." : confirmText}
