@@ -40,7 +40,9 @@ const Input: React.FC<InputProps> = ({
       )}
 
       <div className="mt-2">
-        <div className="flex items-center rounded-md bg-white pl-3 outline outline-1 -outline-offset-1 outline-gray-300 focus-within:outline-2 focus-within:-outline-offset-2 focus-within:outline-indigo-600">
+        <div
+          className={`${disabled ? "bg-gray-100" : "bg-white"} flex items-center rounded-md pl-3 disabled:pl-0 outline-1 -outline-offset-1 outline-gray-300 focus-within:outline-2 focus-within:-outline-offset-2 focus-within:outline-indigo-600`}
+        >
           {prefix && (
             <div className="shrink-0 text-base text-gray-500 select-none sm:text-sm/6">
               {prefix}

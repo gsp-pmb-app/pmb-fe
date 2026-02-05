@@ -1,20 +1,21 @@
 import { Outlet } from "react-router-dom";
+import Navbar from "../Navbar";
+import Breadcrumbs from "../Breadcrumbs";
 
 export const PendaftarLayout = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
-      <header className="border-b bg-white">
-        <div className="mx-auto max-w-7xl px-4 py-4">
-          <h1 className="text-lg font-semibold text-gray-900">
-            Penerimaan Mahasiswa Baru
-          </h1>
-        </div>
-      </header>
+      <Navbar />
 
       {/* Content */}
       <main className="mx-auto max-w-7xl px-4 py-6">
-        <Outlet />
+        <div className="mb-8">
+          <Breadcrumbs />
+        </div>
+        <div className="p-4 rounded-lg bg-gray-100 border border-gray-200 min-h-96">
+          <Outlet />
+        </div>
       </main>
     </div>
   );
