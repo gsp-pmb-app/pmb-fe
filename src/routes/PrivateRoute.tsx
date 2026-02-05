@@ -11,7 +11,7 @@ const PrivateRoute = () => {
     return <Navigate to="/auth/login" replace />;
   }
 
-  return role !== "undefined" ? <DashboardLayout /> : <PendaftarLayout />;
+  return role !== "pendaftar" ? <DashboardLayout /> : <PendaftarLayout />;
 };
 
 export default PrivateRoute;

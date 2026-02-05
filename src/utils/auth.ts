@@ -12,3 +12,10 @@ export const isStaffOrAdmin = () =>
 
 export const isPendaftar = () =>
   isLoggedIn() && !getRole();
+
+
+export const getAuthHeader = () => ({
+  headers: {
+    Authorization: `Bearer ${sessionStorage.getItem('accessToken')}`,
+  },
+});

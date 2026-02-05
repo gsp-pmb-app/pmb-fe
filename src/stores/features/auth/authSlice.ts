@@ -4,6 +4,7 @@ import axios from 'axios';
 import { toast } from 'sonner';
 import type { AuthState, LoginPayload, LoginPendaftarPayload, RegisterPendaftarPayload } from './type';
 import { API_URL } from '../../../constants';
+import { getProfile } from '../pendaftar';
 
 const initialState: AuthState = {
   isLoading: false,
@@ -55,26 +56,30 @@ export const registerPendaftar = createAsyncThunk(
 // PENDAFTAR LOGIN
 export const loginPendaftar = createAsyncThunk(
   'auth/loginPendaftar',
-  async (payload: LoginPendaftarPayload, { rejectWithValue }) => {
+  async (payload: LoginPendaftarPayload, { dispatch, rejectWithValue }) => {
     try {
-      const response = await axios.post(`${API_URL}/auth/pendaftar/login`, payload);
-
-      const { accessToken, role } = response.data;
-
-      sessionStorage.setItem(
-        'accessToken', accessToken
+      const response = await axios.post(
+        `${API_URL}/auth/pendaftar/login`,
+        payload
       );
-      sessionStorage.setItem(
-        'role', role
-      );
+
+      const { accessToken, role, nomor_pendaftaran } = response.data;
+
+      // ✅ SIMPAN TOKEN DULU
+      sessionStorage.setItem('accessToken', accessToken);
+      sessionStorage.setItem('role', role);
+      sessionStorage.setItem('nomor_pendaftaran', nomor_pendaftaran);
+
+      // ✅ BARU FETCH PROFILE
+      dispatch(getProfile());
 
       return { accessToken, role };
     } catch (error: any) {
-      toast.error(error.response?.data?.msg || 'Login gagal');
       return rejectWithValue(error.response?.data?.msg);
     }
-  },
+  }
 );
+
 
 const authSlice = createSlice({
   name: 'auth',
