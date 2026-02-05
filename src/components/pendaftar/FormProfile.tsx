@@ -79,8 +79,8 @@ const ProfileForm: React.FC<ProfileFormProps> = ({
         value={jenjang}
         onChange={onJenjangChange}
         options={[
-          { label: "S1", value: "S1" },
           { label: "S2", value: "S2" },
+          { label: "S3", value: "S3" },
         ]}
         required
       />
@@ -89,7 +89,7 @@ const ProfileForm: React.FC<ProfileFormProps> = ({
         id="jenjang_terakhir"
         label="Jenjang Pendidikan Terakhir"
         value={
-          jenjang?.value === "S1" ? "S2" : jenjang?.value === "S2" ? "S3" : ""
+          jenjang?.value === "S2" ? "S1" : jenjang?.value === "S3" ? "S2" : ""
         }
         disabled
       />

@@ -32,7 +32,7 @@ export const LoginPendaftar = () => {
 
     try {
       const result = await dispatch(loginPendaftar(form)).unwrap();
-      navigate(result.role ? "/dashboard" : "/home");
+      navigate(result.role !== "pendaftar" ? "/dashboard" : "/home");
     } catch (error) {
       console.error("Login failed:", error);
     }

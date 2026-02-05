@@ -17,6 +17,7 @@ import Modal from "../../components/Modal";
 const Home = () => {
   const dispatch = useAppDispatch();
   const profile = useAppSelector(selectPendaftarProfile);
+  const prodiList = useAppSelector((state) => state.private.admin.prodi);
 
   /* ================= STATE ================= */
   const [form, setForm] = useState({
@@ -44,7 +45,6 @@ const Home = () => {
     dispatch(getProdi());
   }, [dispatch]);
 
-  // sync redux profile → local form
   useEffect(() => {
     if (!profile) return;
 
@@ -91,6 +91,7 @@ const Home = () => {
           tahun_lulus: form.tahun_lulus,
           prodiId: prodi?.value,
           jadwalId: jadwal?.value,
+          status: "aktif",
         }),
       ).unwrap();
 
@@ -102,7 +103,7 @@ const Home = () => {
         await dispatch(uploadDokumen(formData)).unwrap();
       }
 
-      await dispatch(getProfile()); // refresh profile
+      await dispatch(getProfile());
       setShowConfirm(false);
     } catch (err) {
       console.error("Gagal submit:", err);
@@ -111,10 +112,12 @@ const Home = () => {
     }
   };
 
+  const prodiPendaftar = prodiList.find((item) => item.id === profile?.prodiId);
+
   /* ================= RENDER ================= */
   return (
     <div className="mx-auto max-w-3xl rounded-lg bg-white p-6 shadow">
-      {!profile?.isSubmitted ? (
+      {profile?.status === "baru" ? (
         <>
           <h2 className="mb-6 text-xl font-bold">Lengkapi Data Diri</h2>
 
@@ -138,16 +141,17 @@ const Home = () => {
       ) : (
         <ProfileView
           profile={{
-            nama_lengkap: profile.nama_lengkap,
-            no_tele: profile.no_tele,
-            pendidikan_jenjang: profile.pendidikan_jenjang,
-            pendidikan_institusi: profile.pendidikan_institusi,
-            pendidikan_jurusan: profile.pendidikan_jurusan,
-            tahun_lulus: profile.tahun_lulus,
-            prodi: profile.Prodi?.nama_prodi,
-            jadwal: profile.JadwalUjian?.tanggal,
+            nama_lengkap: profile?.nama_lengkap,
+            no_tele: profile?.no_tele,
+            pendidikan_jenjang: profile?.pendidikan_jenjang,
+            pendidikan_institusi: profile?.pendidikan_institusi,
+            pendidikan_jurusan: profile?.pendidikan_jurusan,
+            tahun_lulus: profile?.tahun_lulus,
+            prodi: prodiPendaftar?.nama_prodi,
+            jadwal: profile?.JadwalUjian?.tanggal,
+            foto_path: profile?.foto_path,
           }}
-          kartuUjian={profile.kartuUjian}
+          kartuUjian={profile?.kartuUjian}
         />
       )}
 

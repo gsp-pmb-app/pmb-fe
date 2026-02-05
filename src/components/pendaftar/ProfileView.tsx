@@ -10,6 +10,7 @@ interface ProfileViewProps {
     tahun_lulus: string;
     prodi: string;
     jadwal: string;
+    foto_path: string;
   };
   kartuUjian?: {
     tanggal: string;
@@ -26,8 +27,24 @@ const Item = ({ label, value }: { label: string; value: string }) => (
 );
 
 const ProfileView: React.FC<ProfileViewProps> = ({ profile, kartuUjian }) => {
+  // const apiUrl = import.meta.env.VITE_API_URL;
+  // const baseUrl = new URL(apiUrl).origin;
+
+  // const pathUrl = `${baseUrl}${profile.foto_path}`;
+  // console.log("pathUrl", pathUrl);
   return (
     <div className="space-y-6">
+      {/* <div className="h-24 w-24 overflow-hidden rounded-full border">
+        <img
+          src={pathUrl}
+          alt="Foto Profil"
+          className="h-full w-full object-cover"
+          onError={(e) => {
+            e.currentTarget.src = "/default-avatar.png";
+          }}
+        />
+      </div> */}
+
       <div>
         <h2 className="text-xl font-bold">Data Diri</h2>
         <p className="text-sm text-gray-500">
