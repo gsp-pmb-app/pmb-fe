@@ -19,6 +19,7 @@ const Home = () => {
   const dispatch = useAppDispatch();
   const profile = useAppSelector(selectPendaftarProfile);
   const prodiList = useAppSelector((state) => state.private.admin.prodi);
+  const jadwalList = useAppSelector((state) => state.private.admin.jadwal);
 
   /* ================= STATE ================= */
   const [form, setForm] = useState({
@@ -59,16 +60,23 @@ const Home = () => {
   }, [profile]);
 
   /* ================= OPTIONS (DUMMY) ================= */
-  const prodiOptions: Option[] = [
-    { label: "Teknik Informatika", value: 1 },
-    { label: "Sistem Informasi", value: 2 },
-  ];
+  const prodiOptions: Option[] = prodiList
+    .filter((item) => item.jenjang === jenjang?.value)
+    .map((item) => ({
+      label: item.nama_prodi,
+      value: item.id,
+    }));
 
-  const jadwalOptions: Option[] = [
-    { label: "2025-07-12 09:00 WIB", value: 1 },
-    { label: "2025-07-12 13:00 WIB", value: 2 },
-    { label: "2025-07-13 09:00 WIB", value: 3 },
-  ];
+  const formatJam = (sesi: "pagi" | "siang") => {
+    if (sesi === "pagi") return "09:00";
+    if (sesi === "siang") return "13:00";
+    return "";
+  };
+
+  const jadwalOptions: Option[] = jadwalList.map((item) => ({
+    label: `${item.tanggal} ${formatJam(item.sesi)} WIB`,
+    value: item.id,
+  }));
 
   /* ================= HANDLER ================= */
   const handleChange = (
@@ -136,6 +144,10 @@ const Home = () => {
   };
 
   const prodiPendaftar = prodiList.find((item) => item.id === profile?.prodiId);
+  const jadwalPendaftar = jadwalList.find(
+    (item) => item.id === profile?.jadwalUjianId,
+  );
+  const jadwalUjianPendaftar = `${jadwalPendaftar?.tanggal} ${formatJam(jadwalPendaftar?.sesi)} WIB`;
 
   const isFormValid =
     form.nama_lengkap.trim() !== "" &&
@@ -182,7 +194,7 @@ const Home = () => {
             pendidikan_jurusan: profile?.pendidikan_jurusan,
             tahun_lulus: profile?.tahun_lulus,
             prodi: prodiPendaftar?.nama_prodi,
-            jadwal: profile?.JadwalUjian?.tanggal,
+            jadwal: jadwalUjianPendaftar,
             foto_path: profile?.foto_path,
           }}
           kartuUjian={profile?.kartuUjian}
