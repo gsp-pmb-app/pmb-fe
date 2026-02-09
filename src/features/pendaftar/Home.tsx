@@ -14,6 +14,7 @@ import ProfileForm from "../../components/pendaftar/FormProfile";
 import ProfileView from "../../components/pendaftar/ProfileView";
 import Modal from "../../components/Modal";
 import { MAX_FILE_SIZE } from "../../constants";
+import { toast } from "sonner";
 
 const Home = () => {
   const dispatch = useAppDispatch();
@@ -48,6 +49,11 @@ const Home = () => {
   }, [dispatch]);
 
   useEffect(() => {
+    setProdi(null);
+    setJadwal(null);
+  }, [jenjang]);
+
+  useEffect(() => {
     if (!profile) return;
 
     setForm({
@@ -73,10 +79,12 @@ const Home = () => {
     return "";
   };
 
-  const jadwalOptions: Option[] = jadwalList.map((item) => ({
-    label: `${item.tanggal} ${formatJam(item.sesi)} WIB`,
-    value: item.id,
-  }));
+  const jadwalOptions: Option[] = jadwalList
+    .filter((item) => item.jenjang === jenjang?.value)
+    .map((item) => ({
+      label: `${item.tanggal} ${formatJam(item.sesi)} WIB`,
+      value: item.id,
+    }));
 
   /* ================= HANDLER ================= */
   const handleChange = (
@@ -135,6 +143,7 @@ const Home = () => {
       }
 
       await dispatch(getProfile());
+      toast.success("Data pendaftaran berhasil disimpan");
       setShowConfirm(false);
     } catch (err) {
       console.error("Gagal submit:", err);

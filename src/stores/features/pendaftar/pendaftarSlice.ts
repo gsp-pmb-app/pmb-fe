@@ -44,7 +44,6 @@ export const updateProfile = createAsyncThunk(
         payload,
         getAuthHeader(),
       );
-      toast.success(res.data?.msg || 'Profil berhasil diperbarui');
       return res.data;
     } catch (error: any) {
       toast.error(error.response?.data?.msg || 'Gagal update profil');
@@ -68,7 +67,6 @@ export const uploadDokumen = createAsyncThunk(
           },
         },
       );
-      toast.success(res.data?.msg || 'Dokumen berhasil diupload');
       return res.data;
     } catch (error: any) {
       toast.error(error.response?.data?.msg || 'Upload dokumen gagal');
