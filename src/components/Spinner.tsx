@@ -12,7 +12,7 @@ const sizeMap = {
 };
 
 const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({
-  size = "md",
+  size = "sm",
   className = "",
 }) => {
   return (

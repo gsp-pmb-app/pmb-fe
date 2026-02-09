@@ -27,27 +27,25 @@ const Item = ({ label, value }: { label: string; value: string }) => (
 );
 
 const ProfileView: React.FC<ProfileViewProps> = ({ profile, kartuUjian }) => {
-  // const apiUrl = import.meta.env.VITE_API_URL;
-  // const baseUrl = apiUrl.replace("/api", "");
+  const baseUrl = "https://gsp-pmb-be.up.railway.app";
 
-  // const fotoUrl = profile.foto_path
-  //   ? `${baseUrl}${profile.foto_path}`
-  //   : "/default-avatar.png";
+  const fotoUrl = profile.foto_path
+    ? `${baseUrl}${profile.foto_path}`
+    : "/default-avatar.png";
 
-  // const pathUrl = `${baseUrl}${profile.foto_path}`;
-  // console.log("pathUrl", pathUrl);
   return (
     <div className="space-y-6">
-      {/* <div className="h-24 w-24 overflow-hidden rounded-full border">
+      <div className="h-24 w-24 overflow-hidden rounded-full border">
         <img
-          src={pathUrl}
+          src={fotoUrl}
           alt="Foto Profil"
           className="h-full w-full object-cover"
           onError={(e) => {
-            e.currentTarget.src = "/default-avatar.png";
+            if (e.currentTarget.src.includes("default-avatar")) return;
+            e.currentTarget.src = "/default-avatar.jpg";
           }}
         />
-      </div> */}
+      </div>
 
       <div>
         <h2 className="text-xl font-bold">Data Diri</h2>
