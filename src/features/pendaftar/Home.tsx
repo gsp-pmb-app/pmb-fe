@@ -80,7 +80,7 @@ const Home = () => {
   };
 
   const jadwalOptions: Option[] = jadwalList
-    .filter((item) => item.jenjang === jenjang?.value)
+    .filter((item) => item.prodiId === prodi?.value)
     .map((item) => ({
       label: `${item.tanggal} ${formatJam(item.sesi)} WIB`,
       value: item.id,
