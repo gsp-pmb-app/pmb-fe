@@ -28,7 +28,11 @@ const Item = ({ label, value }: { label: string; value: string }) => (
 
 const ProfileView: React.FC<ProfileViewProps> = ({ profile, kartuUjian }) => {
   // const apiUrl = import.meta.env.VITE_API_URL;
-  // const baseUrl = new URL(apiUrl).origin;
+  // const baseUrl = apiUrl.replace("/api", "");
+
+  // const fotoUrl = profile.foto_path
+  //   ? `${baseUrl}${profile.foto_path}`
+  //   : "/default-avatar.png";
 
   // const pathUrl = `${baseUrl}${profile.foto_path}`;
   // console.log("pathUrl", pathUrl);

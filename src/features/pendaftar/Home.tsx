@@ -13,6 +13,7 @@ import type { Option } from "../../components/SelectList";
 import ProfileForm from "../../components/pendaftar/FormProfile";
 import ProfileView from "../../components/pendaftar/ProfileView";
 import Modal from "../../components/Modal";
+import { MAX_FILE_SIZE } from "../../constants";
 
 const Home = () => {
   const dispatch = useAppDispatch();
@@ -79,6 +80,28 @@ const Home = () => {
     }));
   };
 
+  const handleFotoChange = (file: File | null) => {
+    if (!file) return;
+
+    if (file.size > MAX_FILE_SIZE) {
+      alert("Ukuran foto maksimal 5MB");
+      return;
+    }
+
+    setFoto(file);
+  };
+
+  const handleDokumenChange = (file: File | null) => {
+    if (!file) return;
+
+    if (file.size > MAX_FILE_SIZE) {
+      alert("Ukuran dokumen maksimal 5MB");
+      return;
+    }
+
+    setDokumen(file);
+  };
+
   const handleConfirmSubmit = async () => {
     setIsSubmitting(true);
 
@@ -90,7 +113,7 @@ const Home = () => {
           pendidikan_jurusan: form.pendidikan_jurusan,
           tahun_lulus: form.tahun_lulus,
           prodiId: prodi?.value,
-          jadwalId: jadwal?.value,
+          jadwalUjianId: jadwal?.value,
           status: "aktif",
         }),
       ).unwrap();
@@ -114,6 +137,16 @@ const Home = () => {
 
   const prodiPendaftar = prodiList.find((item) => item.id === profile?.prodiId);
 
+  const isFormValid =
+    form.nama_lengkap.trim() !== "" &&
+    form.no_tele.trim() !== "" &&
+    jenjang !== null &&
+    prodi !== null &&
+    jadwal !== null &&
+    form.pendidikan_institusi.trim() !== "" &&
+    form.pendidikan_jurusan.trim() !== "" &&
+    String(form.tahun_lulus).length === 4;
+
   /* ================= RENDER ================= */
   return (
     <div className="mx-auto max-w-3xl rounded-lg bg-white p-6 shadow">
@@ -133,9 +166,10 @@ const Home = () => {
             onJenjangChange={setJenjang}
             onProdiChange={setProdi}
             onJadwalChange={setJadwal}
-            onFotoChange={setFoto}
-            onDokumenChange={setDokumen}
+            onFotoChange={handleFotoChange}
+            onDokumenChange={handleDokumenChange}
             onSubmit={() => setShowConfirm(true)}
+            isFormValid={isFormValid}
           />
         </>
       ) : (

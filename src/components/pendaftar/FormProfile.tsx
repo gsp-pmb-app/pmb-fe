@@ -4,6 +4,7 @@ import type { Option } from "../SelectList";
 import Input from "../Input";
 import SelectList from "../SelectList";
 import FileUpload from "../FileUpload";
+import LoadingSpinner from "../Spinner";
 
 interface ProfileFormProps {
   form: {
@@ -19,7 +20,7 @@ interface ProfileFormProps {
   prodiOptions: Option[];
   jadwalOptions: Option[];
   loading?: boolean;
-
+  isFormValid: boolean;
   onChange: (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
   ) => void;
@@ -27,8 +28,8 @@ interface ProfileFormProps {
   onProdiChange: (val: Option | null) => void;
   onJadwalChange: (val: Option | null) => void;
 
-  onFotoChange: (file: File) => void;
-  onDokumenChange: (file: File) => void;
+  onFotoChange: (file: File | null) => void;
+  onDokumenChange: (file: File | null) => void;
 
   onSubmit: () => void;
 }
@@ -41,6 +42,7 @@ const ProfileForm: React.FC<ProfileFormProps> = ({
   prodiOptions,
   jadwalOptions,
   loading = false,
+  isFormValid,
   onChange,
   onJenjangChange,
   onProdiChange,
@@ -136,12 +138,14 @@ const ProfileForm: React.FC<ProfileFormProps> = ({
       />
 
       <FileUpload
+        id="foto"
         label="Upload Foto (JPG / JPEG)"
         accept=".jpg,.jpeg"
         onChange={onFotoChange}
       />
 
       <FileUpload
+        id="dokumen"
         label="Upload Dokumen Pendukung (PDF)"
         accept=".pdf"
         onChange={onDokumenChange}
@@ -149,10 +153,10 @@ const ProfileForm: React.FC<ProfileFormProps> = ({
 
       <Button
         type="submit"
-        disabled={loading}
+        disabled={!isFormValid || loading}
         className="w-full rounded-md bg-indigo-600 py-2 text-white disabled:opacity-50"
       >
-        {loading ? "Menyimpan..." : "Simpan Data"}
+        {loading ? <LoadingSpinner /> : "Simpan Data"}
       </Button>
     </form>
   );
