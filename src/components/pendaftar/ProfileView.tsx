@@ -27,21 +27,13 @@ const Item = ({ label, value }: { label: string; value: string }) => (
 );
 
 const ProfileView: React.FC<ProfileViewProps> = ({ profile, kartuUjian }) => {
-  const baseUrl = "https://gsp-pmb-be.up.railway.app";
-
-  const fotoUrl = profile.foto_path
-    ? `${baseUrl}${profile.foto_path}`
-    : "/default-avatar.png";
-
   return (
     <div className="space-y-6">
       <div className="h-24 w-24 overflow-hidden rounded-full border">
         <img
-          src={fotoUrl}
+          src={profile.foto_path || "/default-avatar.jpg"}
           alt="Foto Profil"
-          className="h-full w-full object-cover"
           onError={(e) => {
-            if (e.currentTarget.src.includes("default-avatar")) return;
             e.currentTarget.src = "/default-avatar.jpg";
           }}
         />
