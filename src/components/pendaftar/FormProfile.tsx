@@ -154,7 +154,7 @@ const ProfileForm: React.FC<ProfileFormProps> = ({
       <Button
         type="submit"
         disabled={!isFormValid || loading}
-        className="w-full rounded-md bg-indigo-600 py-2 text-white disabled:opacity-50"
+        className="w-full rounded-md bg-indigo-600 py-2 text-white disabled:opacity-50 flex justify-center items-center"
       >
         {loading ? <LoadingSpinner /> : "Simpan Data"}
       </Button>

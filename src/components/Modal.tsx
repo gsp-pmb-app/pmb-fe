@@ -1,4 +1,5 @@
 import React from "react";
+import LoadingSpinner from "./Spinner";
 
 interface ModalProps {
   open: boolean;
@@ -56,9 +57,9 @@ const Modal: React.FC<ModalProps> = ({
               type="button"
               onClick={onConfirm}
               disabled={loading || confirmDisabled}
-              className="rounded-md bg-indigo-600 px-4 py-1.5 text-sm font-semibold text-white hover:bg-indigo-500 disabled:opacity-50"
+              className="rounded-md bg-indigo-600 px-4 py-1.5 text-sm font-semibold text-white hover:bg-indigo-500 disabled:opacity-50 flex justify-center items-center"
             >
-              {loading ? "Menyimpan..." : confirmText}
+              {loading ? <LoadingSpinner /> : confirmText}
             </button>
           )}
         </div>

@@ -111,7 +111,7 @@ const Home = () => {
           pendidikan_jenjang: jenjang?.value,
           pendidikan_institusi: form.pendidikan_institusi,
           pendidikan_jurusan: form.pendidikan_jurusan,
-          tahun_lulus: form.tahun_lulus,
+          tahun_lulus: Number(form.tahun_lulus),
           prodiId: prodi?.value,
           jadwalUjianId: jadwal?.value,
           status: "aktif",
@@ -196,6 +196,7 @@ const Home = () => {
         onClose={() => setShowConfirm(false)}
         onConfirm={handleConfirmSubmit}
         loading={isSubmitting}
+        confirmDisabled={!isFormValid}
         confirmText="Ya, Simpan"
       >
         Pastikan data yang kamu isi sudah benar. Setelah disimpan, data tidak
