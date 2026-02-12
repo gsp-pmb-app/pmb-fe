@@ -17,6 +17,7 @@ import {
   Ruangan,
   StatusKelulusan,
   Verifikasi,
+  CheckStatus,
 } from "../pages";
 
 export default function AppRoutes() {
@@ -27,7 +28,8 @@ export default function AppRoutes() {
         <Route element={<AuthLayout />}>
           <Route path="/auth/login" element={<LoginPendaftar />} />
           <Route path="/auth/login-admin" element={<LoginAdmin />} />
-          <Route path="/auth/register" element={<RegisterPendaftar />} />
+          <Route path="/auth/register" element={<CheckStatus />} />
+          <Route path="check-status" element={<RegisterSukses />} />
         </Route>
         <Route path="/auth/register-sukses" element={<RegisterSukses />} />
       </Route>

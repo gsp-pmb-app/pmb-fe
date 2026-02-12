@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import {
-  getJadwal,
+  selectProdi,
+  selectJadwal,
   getProdi,
   getProfile,
   selectPendaftarProfile,
@@ -16,10 +17,6 @@ import ProfileView from "../../components/pendaftar/ProfileView";
 import Modal from "../../components/Modal";
 import { MAX_FILE_SIZE } from "../../constants";
 import { toast } from "sonner";
-import {
-  selectProdi,
-  selectJadwal,
-} from "../../stores/features/admin/adminSelector";
 
 const Home = () => {
   const dispatch = useAppDispatch();
@@ -48,8 +45,6 @@ const Home = () => {
 
   /* ================= EFFECT ================= */
   useEffect(() => {
-    dispatch(getProfile());
-    dispatch(getJadwal());
     dispatch(getProdi());
   }, [dispatch]);
 
@@ -66,7 +61,7 @@ const Home = () => {
       no_tele: profile.no_tele,
       pendidikan_institusi: profile.pendidikan_institusi ?? "",
       pendidikan_jurusan: profile.pendidikan_jurusan ?? "",
-      tahun_lulus: profile.tahun_lulus ?? "",
+      tahun_lulus: String(profile.tahun_lulus) ?? "",
     });
   }, [profile]);
 
@@ -201,17 +196,16 @@ const Home = () => {
       ) : (
         <ProfileView
           profile={{
-            nama_lengkap: profile?.nama_lengkap,
-            no_tele: profile?.no_tele,
-            pendidikan_jenjang: profile?.pendidikan_jenjang,
-            pendidikan_institusi: profile?.pendidikan_institusi,
-            pendidikan_jurusan: profile?.pendidikan_jurusan,
-            tahun_lulus: profile?.tahun_lulus,
+            nama_lengkap: profile?.nama_lengkap!,
+            no_tele: profile?.no_tele!,
+            pendidikan_jenjang: profile?.pendidikan_jenjang!,
+            pendidikan_institusi: profile?.pendidikan_institusi!,
+            pendidikan_jurusan: profile?.pendidikan_jurusan!,
+            tahun_lulus: String(profile?.tahun_lulus!),
             prodi: prodiPendaftar?.nama_prodi!,
             jadwal: jadwalUjianPendaftar,
-            foto_path: profile?.foto_path,
+            foto_path: profile?.foto_path!,
           }}
-          kartuUjian={profile?.kartuUjian}
         />
       )}
 

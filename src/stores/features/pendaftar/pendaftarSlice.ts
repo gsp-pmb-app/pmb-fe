@@ -14,7 +14,7 @@ const initialState: PendaftarState = {
   status: null,
   error: null,
   errorUpload: null,
-  isLoadingUpload: false,
+  isLoadingUpload: false
 };
 
 // GET PROFILE

@@ -30,7 +30,6 @@ export const Pendaftar = () => {
 
   const prodiList = useAppSelector((state) => state.private.admin.prodi.data);
 
-  // 🔥 SIMPAN SEBAGAI STRING
   const [prodiId, setProdiId] = useState<string>("");
 
   /* ===== FETCH PRODI ===== */
@@ -47,10 +46,16 @@ export const Pendaftar = () => {
     );
   }, [dispatch, prodiId]);
 
-  /* ===== FILTER ===== */
-  const handleFilterProdi = (option?: { label: string; value: string }) => {
-    setProdiId(option?.value ?? "");
-  };
+  const prodiOptions = [
+    { label: "Semua Prodi", value: "" },
+    ...prodiList.map((p) => ({
+      label: p.nama_prodi,
+      value: String(p.id),
+    })),
+  ];
+
+  const selectedProdi =
+    prodiOptions.find((opt) => opt.value === prodiId) ?? prodiOptions[0];
 
   /* ===== TABLE ===== */
   const columns: TableColumn<PendaftarRow>[] = [
@@ -81,9 +86,10 @@ export const Pendaftar = () => {
       {/* FILTER */}
       <div className="w-64">
         <SelectList
+          id="filter-prodi"
           label="Filter Prodi"
-          value={prodiId}
-          onChange={handleFilterProdi}
+          value={selectedProdi}
+          onChange={(opt) => setProdiId(String(opt.value))}
           options={[
             { label: "Semua Prodi", value: "" },
             ...prodiList.map((p) => ({

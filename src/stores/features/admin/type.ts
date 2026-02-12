@@ -26,7 +26,6 @@ export interface Prodi {
   updatedAt: string;
 }
 
-
 export interface PendaftarItem {
   id: number;
   nomor_pendaftaran: string;

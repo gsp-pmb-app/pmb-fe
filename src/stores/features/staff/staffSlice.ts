@@ -67,9 +67,7 @@ export const inputNilai = createAsyncThunk(
       toast.success('Nilai berhasil disimpan');
       return res.data;
     } catch (error: any) {
-      toast.error(error.response?.data?.msg || 'Gagal input nilai', {
-        className: toastStyles.error,
-      });
+      toast.error(error.response?.data?.msg || 'Gagal input nilai');
       return rejectWithValue(error.response?.data?.msg);
     }
   },
@@ -93,14 +91,10 @@ export const setKelulusan = createAsyncThunk(
         getAuthHeader(),
       );
 
-      toast.success(res.data?.msg || 'Status kelulusan berhasil diupdate', {
-        className: toastStyles.success,
-      });
+      toast.success(res.data?.msg || 'Status kelulusan berhasil diupdate');
       return payload;
     } catch (error: any) {
-      toast.error(error.response?.data?.msg || 'Gagal update kelulusan', {
-        className: toastStyles.error,
-      });
+      toast.error(error.response?.data?.msg || 'Gagal update kelulusan');
       return rejectWithValue(error.response?.data?.msg);
     }
   },

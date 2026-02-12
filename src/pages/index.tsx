@@ -1,4 +1,5 @@
 export * from "./PendaftarPage";
+export * from "./CheckStatusPage";
 
 export * from "./admin/JadwalPage";
 export * from "./admin/ProdiPage";

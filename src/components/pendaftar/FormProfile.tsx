@@ -78,7 +78,7 @@ const ProfileForm: React.FC<ProfileFormProps> = ({
       <SelectList
         id="jenjang"
         label="Jenjang Pendidikan"
-        value={jenjang}
+        value={jenjang!}
         onChange={onJenjangChange}
         options={[
           { label: "S2", value: "S2" },
@@ -124,7 +124,7 @@ const ProfileForm: React.FC<ProfileFormProps> = ({
       <SelectList
         id="prodi"
         label="Program Studi"
-        value={prodi}
+        value={prodi!}
         onChange={onProdiChange}
         options={prodiOptions}
       />
@@ -132,7 +132,7 @@ const ProfileForm: React.FC<ProfileFormProps> = ({
       <SelectList
         id="jadwal"
         label="Pilih Jadwal Ujian"
-        value={jadwal}
+        value={jadwal!}
         onChange={onJadwalChange}
         options={jadwalOptions}
       />
