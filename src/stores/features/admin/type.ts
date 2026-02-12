@@ -1,9 +1,31 @@
 export interface AdminState {
-  isLoading: boolean;
-  prodi: any[];
-  jadwal: any[];
-  error: string | null;
+  prodi: {
+    data: Prodi[];
+    isLoading: boolean;
+    error: string | null;
+  };
+  ruangan: {
+    data: Ruangan[];
+    isLoading: boolean;
+    error: string | null;
+  };
+  jadwal: {
+    data: Jadwal[];
+    isLoading: boolean;
+    error: string | null;
+  };
 }
+
+export type JenjangProdi = 'S2' | 'S3';
+
+export interface Prodi {
+  id: number;
+  nama_prodi: string;
+  jenjang: JenjangProdi;
+  createdAt: string;
+  updatedAt: string;
+}
+
 
 export interface PendaftarItem {
   id: number;
@@ -16,6 +38,31 @@ export interface PendaftarItem {
   status: string;
   createdAt: string;
 }
+
+export interface Ruangan {
+  id: number;
+  nama_ruangan: string;
+  kapasitas: number;
+  lokasi: string;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+export type SesiUjian = 'pagi' | 'siang';
+
+export interface Jadwal {
+  id: number;
+  tanggal: string;        
+  sesi: SesiUjian;
+  kuota: number;
+  ruanganId?: number | null;
+  prodiId?: number | null;
+  ruangan?: Ruangan;
+  prodi?: Prodi;
+  createdAt: string;
+  updatedAt: string;
+}
+
 
 export interface PendaftarAdminState {
   data: PendaftarItem[];

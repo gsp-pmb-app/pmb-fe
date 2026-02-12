@@ -35,7 +35,7 @@ const Modal: React.FC<ModalProps> = ({
       <div className="relative w-full max-w-md rounded-md bg-white shadow-lg px-4">
         {/* Header */}
         <div className="border-b border-gray-300 py-3">
-          <h2 className="text-sm font-semibold text-gray-900">{title}</h2>
+          <h2 className="text-xl font-semibold text-gray-900">{title}</h2>
         </div>
 
         {/* Body */}

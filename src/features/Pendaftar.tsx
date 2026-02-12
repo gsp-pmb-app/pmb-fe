@@ -28,7 +28,7 @@ export const Pendaftar = () => {
     (state) => state.private.pendaftarAdmin,
   );
 
-  const prodiList = useAppSelector((state) => state.private.admin.prodi);
+  const prodiList = useAppSelector((state) => state.private.admin.prodi.data);
 
   // 🔥 SIMPAN SEBAGAI STRING
   const [prodiId, setProdiId] = useState<string>("");

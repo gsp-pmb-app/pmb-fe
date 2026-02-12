@@ -8,6 +8,7 @@ import {
   uploadDokumen,
   useAppDispatch,
   useAppSelector,
+  type SesiUjian,
 } from "../../stores";
 import type { Option } from "../../components/SelectList";
 import ProfileForm from "../../components/pendaftar/FormProfile";
@@ -15,12 +16,16 @@ import ProfileView from "../../components/pendaftar/ProfileView";
 import Modal from "../../components/Modal";
 import { MAX_FILE_SIZE } from "../../constants";
 import { toast } from "sonner";
+import {
+  selectProdi,
+  selectJadwal,
+} from "../../stores/features/admin/adminSelector";
 
 const Home = () => {
   const dispatch = useAppDispatch();
   const profile = useAppSelector(selectPendaftarProfile);
-  const prodiList = useAppSelector((state) => state.private.admin.prodi);
-  const jadwalList = useAppSelector((state) => state.private.admin.jadwal);
+  const prodiList = useAppSelector(selectProdi);
+  const jadwalList = useAppSelector(selectJadwal);
 
   /* ================= STATE ================= */
   const [form, setForm] = useState({
@@ -73,7 +78,7 @@ const Home = () => {
       value: item.id,
     }));
 
-  const formatJam = (sesi: "pagi" | "siang") => {
+  const formatJam = (sesi: SesiUjian) => {
     if (sesi === "pagi") return "09:00";
     if (sesi === "siang") return "13:00";
     return "";
@@ -156,7 +161,7 @@ const Home = () => {
   const jadwalPendaftar = jadwalList.find(
     (item) => item.id === profile?.jadwalUjianId,
   );
-  const jadwalUjianPendaftar = `${jadwalPendaftar?.tanggal} ${formatJam(jadwalPendaftar?.sesi)} WIB`;
+  const jadwalUjianPendaftar = `${jadwalPendaftar?.tanggal} ${formatJam(jadwalPendaftar?.sesi!)} WIB`;
 
   const isFormValid =
     form.nama_lengkap.trim() !== "" &&
@@ -202,7 +207,7 @@ const Home = () => {
             pendidikan_institusi: profile?.pendidikan_institusi,
             pendidikan_jurusan: profile?.pendidikan_jurusan,
             tahun_lulus: profile?.tahun_lulus,
-            prodi: prodiPendaftar?.nama_prodi,
+            prodi: prodiPendaftar?.nama_prodi!,
             jadwal: jadwalUjianPendaftar,
             foto_path: profile?.foto_path,
           }}

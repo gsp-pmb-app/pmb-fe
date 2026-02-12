@@ -81,12 +81,6 @@ export const LoginAdmin = () => {
         </Button>
 
         <div className="mt-4 text-center flex flex-col gap-1">
-          <p className="text-sm text-gray-500">
-            Belum punya akun?{" "}
-            <Link to="/register" className="text-indigo-600 hover:underline">
-              Daftar
-            </Link>
-          </p>
           <Link
             to="/auth/login"
             className="text-sm text-indigo-600 hover:underline"

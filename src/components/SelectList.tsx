@@ -17,7 +17,7 @@ export interface Option {
 interface SelectListboxProps {
   id: string;
   label?: string;
-  value: Option | null;
+  value: Option;
   onChange: (value: Option) => void;
   options: Option[];
   required?: boolean;
