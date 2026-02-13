@@ -58,7 +58,7 @@ export default function Breadcrumbs() {
                   to={page.href}
                   onClick={() => setCurrentPage(page.name)}
                   aria-current={isActive ? "page" : undefined}
-                  className={`ml-4 text-sm font-medium ${
+                  className={`ml-2 lg:ml-4 text-xs lg:text-sm font-medium ${
                     isActive
                       ? "text-indigo-600"
                       : "text-gray-500 hover:text-gray-700"

@@ -35,6 +35,9 @@ export const Verifikasi = () => {
     "verifikasi" | "ditolak" | null
   >(null);
 
+  const isUjian =
+    pendaftar?.status === "lulus" || pendaftar?.status === "tidak_lulus";
+
   useEffect(() => {
     if (id) {
       dispatch(getPendaftarById(id));
@@ -85,6 +88,7 @@ export const Verifikasi = () => {
               jadwal: jadwalUjianPendaftar,
               foto_path: pendaftar?.foto_path!,
               tanggal_lahir: pendaftar?.tanggal_lahir!,
+              status: pendaftar?.status!,
             }}
             isStaff={true}
           />
@@ -104,27 +108,29 @@ export const Verifikasi = () => {
               />
             )}
           </div>
-          <div className="flex flex-row gap-4 justify-end items-center mt-6">
-            <Button
-              className="w-36 rounded-md bg-green-600 px-4 py-2 text-white font-medium hover:bg-green-700 flex justify-center items-center gap-1 cursor-pointer"
-              onClick={() => {
-                setSelectedStatus("verifikasi");
-                setOpenModal(true);
-              }}
-            >
-              <CheckIcon height={16} width={16} /> Verifikasi
-            </Button>
+          {!isUjian && (
+            <div className="flex flex-row gap-4 justify-end items-center mt-6">
+              <Button
+                className="w-36 rounded-md bg-green-600 px-4 py-2 text-white font-medium hover:bg-green-700 flex justify-center items-center gap-1 cursor-pointer"
+                onClick={() => {
+                  setSelectedStatus("verifikasi");
+                  setOpenModal(true);
+                }}
+              >
+                <CheckIcon height={16} width={16} /> Verifikasi
+              </Button>
 
-            <Button
-              className="w-36 rounded-md bg-red-600 px-4 py-2 text-white font-medium hover:bg-red-700 flex justify-center items-center gap-1 cursor-pointer"
-              onClick={() => {
-                setSelectedStatus("ditolak");
-                setOpenModal(true);
-              }}
-            >
-              <XMarkIcon height={16} width={16} /> Tolak
-            </Button>
-          </div>
+              <Button
+                className="w-36 rounded-md bg-red-600 px-4 py-2 text-white font-medium hover:bg-red-700 flex justify-center items-center gap-1 cursor-pointer"
+                onClick={() => {
+                  setSelectedStatus("ditolak");
+                  setOpenModal(true);
+                }}
+              >
+                <XMarkIcon height={16} width={16} /> Tolak
+              </Button>
+            </div>
+          )}
         </>
       )}
 

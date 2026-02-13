@@ -12,45 +12,61 @@ interface ProfileViewProps {
     jadwal: string;
     foto_path: string;
     tanggal_lahir: string;
+    status: string;
   };
   isStaff?: boolean;
 }
 
 const Item = ({ label, value }: { label: string; value: string }) => (
-  <div>
-    <p className="text-gray-500">{label}</p>
-    <p className="font-medium">{value}</p>
+  <div className="space-y-1">
+    <p className="text-xs sm:text-sm text-gray-500">{label}</p>
+    <p className="text-sm sm:text-base font-medium text-gray-900 break-words">
+      {value || "-"}
+    </p>
   </div>
 );
 
 const ProfileView: React.FC<ProfileViewProps> = ({ profile, isStaff }) => {
+  const isNotVerified =
+    profile.status === "aktif" || profile.status === "ditolak";
+
   return (
-    <div className="space-y-6">
-      <div className="h-24 w-24 overflow-hidden rounded-full border">
-        <img
-          src={profile.foto_path || "/default-avatar.jpg"}
-          alt="Foto Profil"
-          onError={(e) => {
-            e.currentTarget.src = "/default-avatar.jpg";
-          }}
-        />
+    <div className="space-y-5 sm:space-y-6">
+      {/* Avatar + Header */}
+      <div className="flex items-center gap-4">
+        <div className="h-20 w-20 sm:h-24 sm:w-24 overflow-hidden rounded-full border bg-gray-100 shrink-0">
+          <img
+            src={profile.foto_path || "/default-avatar.jpg"}
+            alt="Foto Profil"
+            className="h-full w-full object-cover"
+            onError={(e) => {
+              e.currentTarget.src = "/default-avatar.jpg";
+            }}
+          />
+        </div>
+
+        <div>
+          <h2 className="text-lg sm:text-xl font-bold text-gray-900">
+            {isStaff ? "Data Pendaftar" : "Data Diri"}
+          </h2>
+
+          <p className="text-xs sm:text-sm text-gray-500 leading-relaxed">
+            {isStaff
+              ? "Silakan lakukan pemeriksaan data pendaftar secara menyeluruh sebelum proses verifikasi."
+              : isNotVerified
+                ? "Data diri belum terverifikasi. Silakan tunggu proses verifikasi dari pihak prodi."
+                : "Data diri telah terverifikasi."}
+          </p>
+        </div>
       </div>
 
-      <div>
-        <h2 className="text-xl font-bold">
-          {" "}
-          {isStaff ? "Data pendaftar" : "Data diri"}
-        </h2>
-        <p className="text-sm text-gray-500">
-          {isStaff
-            ? "Silakan lakukan pemeriksaan data pendaftar secara menyeluruh sebelum proses verifikasi."
-            : "Data telah dikunci dan sedang diverifikasi oleh prodi."}
-        </p>
-      </div>
+      {/* Divider */}
+      <div className="border-t border-gray-200" />
 
-      <div className="grid grid-cols-2 gap-4 text-sm">
+      {/* Data Grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4">
         <Item label="Nama Lengkap" value={profile.nama_lengkap} />
-        <Item label="Tanggal Lahir" value={profile.tanggal_lahir || "-"} />
+        <Item label="Tanggal Lahir" value={profile.tanggal_lahir} />
         <Item label="No. Telegram" value={profile.no_tele} />
         <Item label="Jenjang Pilihan" value={profile.pendidikan_jenjang} />
         <Item label="Institusi Terakhir" value={profile.pendidikan_institusi} />

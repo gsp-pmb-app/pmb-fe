@@ -64,7 +64,6 @@ export const Pendaftar = () => {
   const selectedProdi =
     prodiOptions.find((opt) => opt.value === prodiId) ?? prodiOptions[0];
 
-  /* ===== TABLE ===== */
   const columns: TableColumn<PendaftarRow>[] = [
     { key: "nomor_pendaftaran", label: "No. Pendaftaran" },
     { key: "nama_lengkap", label: "Nama Lengkap" },
@@ -83,12 +82,11 @@ export const Pendaftar = () => {
       key: "status",
       label: "Status",
       render: (row) => (
-        <span className="rounded-full bg-gray-100 px-2 py-0.5 text-xs">
+        <span className="rounded-full bg-gray-100 px-2 py-0.5 text-xs whitespace-nowrap">
           {row.status}
         </span>
       ),
     },
-
     ...(role === "staff"
       ? [
           {
@@ -99,9 +97,17 @@ export const Pendaftar = () => {
                 onClick={() =>
                   navigate(`/staff/verifikasi/${row.nomor_pendaftaran}`)
                 }
-                className="rounded-md bg-indigo-600 px-4 py-1.5 text-sm font-semibold text-white hover:bg-indigo-500 disabled:opacity-50 flex justify-center items-center"
+                className="
+                  rounded-md bg-indigo-600
+                  px-3 py-1.5 text-xs sm:text-sm
+                  font-semibold text-white
+                  hover:bg-indigo-500
+                  whitespace-nowrap
+                "
               >
-                Verifikasi
+                {row.status === "lulus" || row.status === "tidak_lulus"
+                  ? "Detail"
+                  : "Verifikasi"}
               </Button>
             ),
           },
@@ -111,32 +117,34 @@ export const Pendaftar = () => {
 
   return (
     <div className="space-y-4">
-      <h2 className="text-lg font-semibold">Data Pendaftar</h2>
+      {/* HEADER + FILTER */}
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+        <h2 className="text-lg font-semibold">Data Pendaftar</h2>
 
-      {/* FILTER */}
-      <div className="w-64">
-        <SelectList
-          id="filter-prodi"
-          label="Filter Prodi"
-          value={selectedProdi}
-          onChange={(opt) => setProdiId(String(opt.value))}
-          options={[
-            { label: "Semua Prodi", value: "" },
-            ...prodiList.map((p) => ({
-              label: p.nama_prodi,
-              value: String(p.id),
-            })),
-          ]}
-        />
+        <div className="w-full sm:w-64">
+          <SelectList
+            id="filter-prodi"
+            label="Filter Prodi"
+            value={selectedProdi}
+            onChange={(opt) => setProdiId(String(opt.value))}
+            options={prodiOptions}
+          />
+        </div>
       </div>
 
-      {isLoading ? (
-        <div className="flex justify-center items-center py-6">
-          <LoadingSpinner />
-        </div>
-      ) : (
-        <Table columns={columns} data={data} emptyText="Belum ada pendaftar" />
-      )}
+      <div>
+        {isLoading ? (
+          <div className="flex justify-center items-center py-10">
+            <LoadingSpinner />
+          </div>
+        ) : (
+          <Table
+            columns={columns}
+            data={data}
+            emptyText="Belum ada pendaftar"
+          />
+        )}
+      </div>
     </div>
   );
 };
