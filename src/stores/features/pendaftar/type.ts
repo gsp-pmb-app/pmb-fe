@@ -9,7 +9,7 @@ export interface PendaftarState {
   errorUpload: string | null
 }
 
-export type StatusPendaftar = "baru" | "aktif" | "verifikasi" | "lulus" | "tidak_lulus";
+export type StatusPendaftar = "baru" | "aktif" | "verifikasi" | "ditolak" | "lulus" | "tidak_lulus";
 
 export interface Pendaftar {
   id: number;
@@ -17,6 +17,7 @@ export interface Pendaftar {
   kode_akses: string;
   nama_lengkap: string;
   no_tele: string;
+  tanggal_lahir: string;
 
   pendidikan_institusi: string;
   pendidikan_jurusan: string;
@@ -26,6 +27,7 @@ export interface Pendaftar {
   prodiId: number;
   jadwalUjianId: number;
   foto_path: string | null;
+  file_path: string | null;
 
   telegram_token: string;
   telegram_chat_id: string;

@@ -1,112 +1,108 @@
-import { useEffect, useState } from "react";
-import Table, { type TableColumn } from "../components/Table";
-import SelectList from "../components/SelectList";
+import { useParams } from "react-router-dom";
 import {
+  getJadwal,
+  getProdi,
+  selectJadwal,
+  selectProdi,
   useAppDispatch,
   useAppSelector,
-  getAllPendaftar,
-  getProdi,
+  verifikasiDokumen,
+  getPendaftarById,
+  selectPendaftarById,
+  selectPendaftarByIdLoading,
 } from "../stores";
+import { useEffect } from "react";
+import ProfileView from "../components/pendaftar/ProfileView";
+import { formatJam } from "../utils/formatJam";
+import { Button } from "@headlessui/react";
+import { CheckIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import LoadingSpinner from "../components/Spinner";
 
-interface PendaftarRow {
-  id: number;
-  nomor_pendaftaran: string;
-  nama_lengkap: string;
-  no_tele: string;
-  pendidikan_jenjang?: string;
-  status: string;
-  prodi?: {
-    id: number;
-    nama_prodi: string;
-  };
-}
-
-export const Pendaftar = () => {
+export const Verifikasi = () => {
   const dispatch = useAppDispatch();
+  const { id } = useParams<{ id: string }>();
 
-  const { data, isLoading } = useAppSelector(
-    (state) => state.private.pendaftarAdmin,
-  );
+  const loading = useAppSelector(selectPendaftarByIdLoading);
+  const pendaftar = useAppSelector(selectPendaftarById);
+  const prodiList = useAppSelector(selectProdi);
+  const jadwalList = useAppSelector(selectJadwal);
 
-  const prodiList = useAppSelector((state) => state.private.admin.prodi.data);
-
-  const [prodiId, setProdiId] = useState<string>("");
-
-  /* ===== FETCH PRODI ===== */
   useEffect(() => {
-    dispatch(getProdi());
-  }, [dispatch]);
+    if (id) {
+      dispatch(getPendaftarById(id));
+      dispatch(getProdi());
+      dispatch(getJadwal());
+    }
+  }, [id, dispatch]);
 
-  /* ===== FETCH PENDAFTAR ===== */
-  useEffect(() => {
+  const handleVerify = (status: "verifikasi" | "ditolak") => {
     dispatch(
-      prodiId
-        ? getAllPendaftar({ prodiId: Number(prodiId) })
-        : getAllPendaftar(),
+      verifikasiDokumen({
+        id: id!,
+        status: status,
+      }),
     );
-  }, [dispatch, prodiId]);
+  };
 
-  const prodiOptions = [
-    { label: "Semua Prodi", value: "" },
-    ...prodiList.map((p) => ({
-      label: p.nama_prodi,
-      value: String(p.id),
-    })),
-  ];
-
-  const selectedProdi =
-    prodiOptions.find((opt) => opt.value === prodiId) ?? prodiOptions[0];
-
-  /* ===== TABLE ===== */
-  const columns: TableColumn<PendaftarRow>[] = [
-    { key: "nomor_pendaftaran", label: "No. Pendaftaran" },
-    { key: "nama_lengkap", label: "Nama Lengkap" },
-    { key: "no_tele", label: "Telegram" },
-    {
-      key: "prodi",
-      label: "Prodi",
-      render: (row) => row.prodi?.nama_prodi || "-",
-    },
-    { key: "pendidikan_jenjang", label: "Jenjang" },
-    {
-      key: "status",
-      label: "Status",
-      render: (row) => (
-        <span className="rounded-full bg-gray-100 px-2 py-0.5 text-xs">
-          {row.status}
-        </span>
-      ),
-    },
-  ];
+  const prodiPendaftar = prodiList.find(
+    (item) => item.id === pendaftar?.prodiId,
+  );
+  const jadwalPendaftar = jadwalList.find(
+    (item) => item.id === pendaftar?.jadwalUjianId,
+  );
+  const jadwalUjianPendaftar = `${jadwalPendaftar?.tanggal} ${formatJam(jadwalPendaftar?.sesi!)} WIB`;
+  const fileUrl = pendaftar?.file_path || "/dummy.pdf";
 
   return (
-    <div className="space-y-4">
-      <h2 className="text-lg font-semibold">Data Pendaftar</h2>
-
-      {/* FILTER */}
-      <div className="w-64">
-        <SelectList
-          id="filter-prodi"
-          label="Filter Prodi"
-          value={selectedProdi}
-          onChange={(opt) => setProdiId(String(opt.value))}
-          options={[
-            { label: "Semua Prodi", value: "" },
-            ...prodiList.map((p) => ({
-              label: p.nama_prodi,
-              value: String(p.id),
-            })),
-          ]}
-        />
-      </div>
-
-      {isLoading ? (
-        <div className="text-sm text-gray-500">Memuat data...</div>
+    <div className="mx-auto max-w-3xl rounded-lg bg-white p-6 shadow">
+      {loading ? (
+        <LoadingSpinner />
       ) : (
-        <Table columns={columns} data={data} emptyText="Belum ada pendaftar" />
+        <>
+          <ProfileView
+            profile={{
+              nama_lengkap: pendaftar?.nama_lengkap!,
+              no_tele: pendaftar?.no_tele!,
+              pendidikan_jenjang: pendaftar?.pendidikan_jenjang!,
+              pendidikan_institusi: pendaftar?.pendidikan_institusi!,
+              pendidikan_jurusan: pendaftar?.pendidikan_jurusan!,
+              tahun_lulus: String(pendaftar?.tahun_lulus!),
+              prodi: prodiPendaftar?.nama_prodi!,
+              jadwal: jadwalUjianPendaftar,
+              foto_path: pendaftar?.foto_path!,
+              tanggal_lahir: pendaftar?.tanggal_lahir!,
+            }}
+            isStaff={true}
+          />
+
+          <div className="mt-6">
+            <p className="text-gray-500">Dokumen Persyaratan:</p>
+            <iframe
+              src={fileUrl}
+              width="100%"
+              height="600px"
+              className="rounded border"
+            />
+          </div>
+          <div className="flex flex-row gap-4 justify-end items-center mt-6">
+            <Button
+              className="w-36 rounded-md bg-green-600 px-4 py-2 text-white font-medium hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 disabled:opacity-50 flex justify-center items-center gap-1"
+              onClick={() => handleVerify("verifikasi")}
+            >
+              <CheckIcon height={16} width={16} /> Verifikasi
+            </Button>
+            <Button
+              className="w-36 rounded-md bg-red-600 px-4 py-2 text-white font-medium hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 disabled:opacity-50 flex justify-center items-center gap-1"
+              onClick={() => handleVerify("ditolak")}
+            >
+              <XMarkIcon height={16} width={16} />
+              Tolak
+            </Button>
+          </div>
+        </>
       )}
     </div>
   );
 };
 
-export default Pendaftar;
+export default Verifikasi;

@@ -4,6 +4,7 @@ import axios from 'axios';
 import { toast } from 'sonner';
 import type { AuthState, LoginPayload, LoginPendaftarPayload, RegisterPendaftarPayload } from './type';
 import { API_URL } from '../../../constants';
+import { getProfile } from '../pendaftar';
 
 const initialState: AuthState = {
   isLoading: false,
@@ -56,7 +57,7 @@ export const registerPendaftar = createAsyncThunk(
 // PENDAFTAR LOGIN
 export const loginPendaftar = createAsyncThunk(
   'auth/loginPendaftar',
-  async (payload: LoginPendaftarPayload, { rejectWithValue }) => {
+  async (payload: LoginPendaftarPayload, { dispatch, rejectWithValue }) => {
     try {
       const response = await axios.post(
         `${API_URL}/auth/pendaftar/login`,
@@ -69,6 +70,7 @@ export const loginPendaftar = createAsyncThunk(
       sessionStorage.setItem('accessToken', accessToken);
       sessionStorage.setItem('role', role);
       sessionStorage.setItem('nomor_pendaftaran', nomor_pendaftaran);
+      dispatch(getProfile());
 
       return { accessToken, role };
     } catch (error: any) {
@@ -147,3 +149,4 @@ export const {
   reducer: authReducer,
   actions: { logout, loadAuthFromStorage },
 } = authSlice;
+

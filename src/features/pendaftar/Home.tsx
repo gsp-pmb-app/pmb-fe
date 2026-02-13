@@ -10,6 +10,7 @@ import {
   useAppDispatch,
   useAppSelector,
   type SesiUjian,
+  getJadwal,
 } from "../../stores";
 import type { Option } from "../../components/SelectList";
 import ProfileForm from "../../components/pendaftar/FormProfile";
@@ -17,6 +18,7 @@ import ProfileView from "../../components/pendaftar/ProfileView";
 import Modal from "../../components/Modal";
 import { MAX_FILE_SIZE } from "../../constants";
 import { toast } from "sonner";
+import { formatJam } from "../../utils/formatJam";
 
 const Home = () => {
   const dispatch = useAppDispatch();
@@ -31,6 +33,7 @@ const Home = () => {
     pendidikan_institusi: "",
     pendidikan_jurusan: "",
     tahun_lulus: "",
+    tanggal_lahir: "",
   });
 
   const [jenjang, setJenjang] = useState<Option | null>(null);
@@ -46,6 +49,8 @@ const Home = () => {
   /* ================= EFFECT ================= */
   useEffect(() => {
     dispatch(getProdi());
+    dispatch(getJadwal());
+    dispatch(getProfile());
   }, [dispatch]);
 
   useEffect(() => {
@@ -62,6 +67,7 @@ const Home = () => {
       pendidikan_institusi: profile.pendidikan_institusi ?? "",
       pendidikan_jurusan: profile.pendidikan_jurusan ?? "",
       tahun_lulus: String(profile.tahun_lulus) ?? "",
+      tanggal_lahir: profile.tanggal_lahir ?? "",
     });
   }, [profile]);
 
@@ -72,12 +78,6 @@ const Home = () => {
       label: item.nama_prodi,
       value: item.id,
     }));
-
-  const formatJam = (sesi: SesiUjian) => {
-    if (sesi === "pagi") return "09:00";
-    if (sesi === "siang") return "13:00";
-    return "";
-  };
 
   const jadwalOptions: Option[] = jadwalList
     .filter((item) => item.prodiId === prodi?.value)
@@ -131,6 +131,7 @@ const Home = () => {
           prodiId: prodi?.value,
           jadwalUjianId: jadwal?.value,
           status: "aktif",
+          tanggal_lahir: form.tanggal_lahir,
         }),
       ).unwrap();
 
@@ -161,6 +162,7 @@ const Home = () => {
   const isFormValid =
     form.nama_lengkap.trim() !== "" &&
     form.no_tele.trim() !== "" &&
+    form.tanggal_lahir.trim() !== "" &&
     jenjang !== null &&
     prodi !== null &&
     jadwal !== null &&
@@ -205,7 +207,9 @@ const Home = () => {
             prodi: prodiPendaftar?.nama_prodi!,
             jadwal: jadwalUjianPendaftar,
             foto_path: profile?.foto_path!,
+            tanggal_lahir: profile?.tanggal_lahir!,
           }}
+          isStaff={false}
         />
       )}
 

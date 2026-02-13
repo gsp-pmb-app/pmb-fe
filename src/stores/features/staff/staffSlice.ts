@@ -4,17 +4,16 @@ import axios from 'axios';
 import { toast } from 'sonner';
 import { API_URL } from '../../../constants';
 import { getAuthHeader } from '../../../utils/auth';
+import type { StaffState } from './type';
 
 /* ================== STATE ================== */
-export interface StaffState {
-  isLoading: boolean;
-  error: string | null;
-}
 
 const initialState: StaffState = {
   isLoading: false,
   error: null,
+  yudisium: [],
 };
+
 
 /* ================== THUNKS ================== */
 /* ===== VERIFIKASI DOKUMEN ===== */
@@ -24,20 +23,19 @@ export const verifikasiDokumen = createAsyncThunk(
   async (
     {
       id,
-      status_verifikasi,
-      catatan,
-    }: { id: number; status_verifikasi: 'valid' | 'invalid'; catatan?: string },
+      status,
+    }: { id: string; status: 'verifikasi' | 'ditolak'; },
     { rejectWithValue },
   ) => {
     try {
       const res = await axios.put(
-        `${API_URL}/staff/dokumen/${id}/verifikasi`,
-        { status_verifikasi, catatan },
+        `${API_URL}/staff/verifikasi-dokumen/${id}`,
+        { status },
         getAuthHeader(),
       );
 
       toast.success(res.data?.msg || 'Dokumen berhasil diverifikasi');
-      return { id, status_verifikasi, catatan };
+      return { id, status };
     } catch (error: any) {
       toast.error(error.response?.data?.msg || 'Gagal verifikasi dokumen');
       return rejectWithValue(error.response?.data?.msg);
@@ -48,56 +46,55 @@ export const verifikasiDokumen = createAsyncThunk(
 /* ===== INPUT NILAI ===== */
 
 export const inputNilai = createAsyncThunk(
-  'staff/inputNilai',
-  async (
-    payload: {
-      pendaftarId: number;
-      jadwalId: number;
-      nilai: number;
-    },
-    { rejectWithValue },
-  ) => {
+  "staff/inputNilai",
+  async (formData: FormData, { rejectWithValue }) => {
     try {
       const res = await axios.post(
         `${API_URL}/staff/nilai`,
-        payload,
-        getAuthHeader(),
+        formData,
+        {
+          ...getAuthHeader(),
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        },
       );
 
-      toast.success('Nilai berhasil disimpan');
+      toast.success("Nilai berhasil disimpan");
       return res.data;
     } catch (error: any) {
-      toast.error(error.response?.data?.msg || 'Gagal input nilai');
+      toast.error(error.response?.data?.msg || "Gagal input nilai");
       return rejectWithValue(error.response?.data?.msg);
     }
   },
 );
 
-/* ===== SET KELULUSAN ===== */
-
-export const setKelulusan = createAsyncThunk(
-  'staff/setKelulusan',
+export const getYudisium = createAsyncThunk(
+  "staff/getYudisium",
   async (
-    payload: {
-      pendaftarId: number;
-      status: 'lulus' | 'tidak_lulus';
-    },
-    { rejectWithValue },
+    params: {
+      status?: string;
+      prodiId?: string;
+      jenjang?: string;
+    } = {},
+    { rejectWithValue }
   ) => {
     try {
-      const res = await axios.put(
-        `${API_URL}/staff/kelulusan`,
-        payload,
-        getAuthHeader(),
+      const res = await axios.get(
+        `${API_URL}/staff/yudisium`,
+        {
+          ...getAuthHeader(),
+          params,
+        }
       );
 
-      toast.success(res.data?.msg || 'Status kelulusan berhasil diupdate');
-      return payload;
+      return res.data;
     } catch (error: any) {
-      toast.error(error.response?.data?.msg || 'Gagal update kelulusan');
-      return rejectWithValue(error.response?.data?.msg);
+      return rejectWithValue(
+        error.response?.data?.msg || "Gagal mengambil data yudisium"
+      );
     }
-  },
+  }
 );
 
 /* ================== SLICE ================== */
@@ -136,17 +133,19 @@ const staffSlice = createSlice({
         state.error = action.payload as string;
       })
 
-      // ===== SET KELULUSAN
-      .addCase(setKelulusan.pending, state => {
+      // ===== GET YUDISIUM
+      .addCase(getYudisium.pending, state => {
         state.isLoading = true;
       })
-      .addCase(setKelulusan.fulfilled, state => {
+      .addCase(getYudisium.fulfilled, (state, action) => {
         state.isLoading = false;
+        state.yudisium = action.payload;
       })
-      .addCase(setKelulusan.rejected, (state, action) => {
+      .addCase(getYudisium.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload as string;
       });
+
   },
 });
 

@@ -1,3 +1,5 @@
+import type { StatusPendaftar } from "../pendaftar";
+
 export interface AdminState {
   prodi: {
     data: Prodi[];
@@ -25,17 +27,28 @@ export interface Prodi {
   createdAt: string;
   updatedAt: string;
 }
-
 export interface PendaftarItem {
   id: number;
   nomor_pendaftaran: string;
   nama_lengkap: string;
   no_tele: string;
-  pendidikan_institusi?: string;
-  pendidikan_jenjang?: string;
-  tahun_lulus?: number;
-  status: string;
-  createdAt: string;
+  tanggal_lahir: string;
+
+  pendidikan_institusi: string;
+  pendidikan_jurusan: string;
+  pendidikan_jenjang: string;
+  tahun_lulus: number;
+
+  prodiId: number;
+  jadwalUjianId: number;
+  foto_path: string | null;
+  file_path: string | null;
+
+  telegram_username: string;
+  status: StatusPendaftar;
+
+  createdAt: string; 
+  updatedAt: string; 
 }
 
 export interface Ruangan {
@@ -64,7 +77,14 @@ export interface Jadwal {
 
 
 export interface PendaftarAdminState {
-  data: PendaftarItem[];
-  isLoading: boolean;
-  error: string | null;
+list: {
+    data: PendaftarItem[];
+    isLoading: boolean;
+    error: string | null;
+  };
+  detail: {
+    data: PendaftarItem | null;
+    isLoading: boolean;
+    error: string | null;
+}
 }

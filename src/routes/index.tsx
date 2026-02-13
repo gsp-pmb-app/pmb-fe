@@ -9,15 +9,16 @@ import {
   KartuUjian,
   LoginAdmin,
   LoginPendaftar,
+  RegisterPendaftar,
   Nilai,
   Pendaftar,
   Prodi,
-  RegisterPendaftar,
   RegisterSukses,
   Ruangan,
   StatusKelulusan,
   Verifikasi,
   CheckStatus,
+  Yudisium,
 } from "../pages";
 
 export default function AppRoutes() {
@@ -28,8 +29,8 @@ export default function AppRoutes() {
         <Route element={<AuthLayout />}>
           <Route path="/auth/login" element={<LoginPendaftar />} />
           <Route path="/auth/login-admin" element={<LoginAdmin />} />
-          <Route path="/auth/register" element={<CheckStatus />} />
-          <Route path="check-status" element={<RegisterSukses />} />
+          <Route path="/auth/register" element={<RegisterPendaftar />} />
+          <Route path="/check-status" element={<CheckStatus />} />
         </Route>
         <Route path="/auth/register-sukses" element={<RegisterSukses />} />
       </Route>
@@ -51,7 +52,8 @@ export default function AppRoutes() {
 
         {/* staff */}
         <Route path="/staff/nilai" element={<Nilai />} />
-        <Route path="/staff/verifikasi" element={<Verifikasi />} />
+        <Route path="/staff/verifikasi/:id" element={<Verifikasi />} />
+        <Route path="/staff/yudisium" element={<Yudisium />} />
       </Route>
 
       <Route path="*" element={<Navigate to="/auth/login" replace />} />

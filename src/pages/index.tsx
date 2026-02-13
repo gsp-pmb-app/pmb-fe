@@ -16,3 +16,4 @@ export * from "./pendaftar/StatusKelulusanPage";
 
 export * from "./staff/NilaiPage";
 export * from "./staff/VerifikasiPage";
+export * from "./staff/YudisiumPage";

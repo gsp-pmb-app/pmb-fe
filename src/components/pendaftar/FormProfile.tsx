@@ -13,6 +13,7 @@ interface ProfileFormProps {
     pendidikan_institusi: string;
     pendidikan_jurusan: string;
     tahun_lulus: string;
+    tanggal_lahir: string;
   };
   jenjang: Option | null;
   prodi: Option | null;
@@ -73,6 +74,15 @@ const ProfileForm: React.FC<ProfileFormProps> = ({
         name="no_tele"
         value={form.no_tele}
         disabled
+      />
+
+      <Input
+        id="tanggal_lahir"
+        label="Tanggal Lahir"
+        name="tanggal_lahir"
+        type="date"
+        value={form.tanggal_lahir}
+        onChange={onChange}
       />
 
       <SelectList

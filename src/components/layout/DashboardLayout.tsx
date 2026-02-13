@@ -14,22 +14,20 @@ import {
   BuildingOfficeIcon,
   DocumentCheckIcon,
   ClipboardDocumentListIcon,
-  CheckCircleIcon,
 } from "@heroicons/react/24/outline";
 import { getRole } from "../../utils/auth";
 
 export const menuByRole = {
   admin: [
-    { name: "Pendaftar", href: "/admin/pendaftar", icon: UsersIcon },
+    { name: "Pendaftar", href: "/dashboard", icon: UsersIcon },
     { name: "Program Studi", href: "/admin/prodi", icon: AcademicCapIcon },
     { name: "Jadwal", href: "/admin/jadwal", icon: CalendarIcon },
     { name: "Ruangan", href: "/admin/ruangan", icon: BuildingOfficeIcon },
   ],
   staff: [
-    { name: "Pendaftar", href: "/staff/pendaftar", icon: UsersIcon },
     {
-      name: "Verifikasi Dokumen",
-      href: "/staff/verifikasi-dokumen",
+      name: "Verifikasi Pendaftar",
+      href: "/dashboard",
       icon: DocumentCheckIcon,
     },
     {
@@ -37,7 +35,7 @@ export const menuByRole = {
       href: "/staff/nilai",
       icon: ClipboardDocumentListIcon,
     },
-    { name: "Set Kelulusan", href: "/staff/kelulusan", icon: CheckCircleIcon },
+    { name: "Yudisium", href: "/staff/yudisium", icon: AcademicCapIcon },
   ],
 };
 

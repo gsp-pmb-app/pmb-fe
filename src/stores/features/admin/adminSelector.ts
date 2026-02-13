@@ -14,3 +14,13 @@ export const selectRuanganError = (state: RootState) => state.private.admin.ruan
 export const selectJadwal = (state: RootState) => state.private.admin.jadwal.data;
 export const selectJadwalLoading = (state: RootState) => state.private.admin.jadwal.isLoading;
 export const selectJadwalError = (state: RootState) => state.private.admin.jadwal.error;
+
+/* ===== LIST PENDAFTAR ===== */
+export const selectPendaftarList = (state: RootState) => state.private.pendaftarAdmin.list.data;
+export const selectPendaftarListLoading = (state: RootState) => state.private.pendaftarAdmin.list.isLoading;
+export const selectPendaftarListError = (state: RootState) => state.private.pendaftarAdmin.list.error;
+
+/* ===== DETAIL PENDAFTAR ===== */
+export const selectPendaftarById = (state: RootState) => state.private.pendaftarAdmin.detail.data;
+export const selectPendaftarByIdLoading = (state: RootState) => state.private.pendaftarAdmin.detail.isLoading;
+export const selectPendaftarByIdError = (state: RootState) => state.private.pendaftarAdmin.detail.error;
