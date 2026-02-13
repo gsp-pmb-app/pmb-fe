@@ -17,7 +17,7 @@ export const AuthLayout = () => {
             </p>
           </div>
         ) : (
-          <div className="w-full max-w-xl text-center">
+          <div className="w-full max-w-xl text-center mb-2">
             <h1 className="text-4xl font-bold text-gray-900">
               Check Status Kelulusan Ujian
             </h1>

@@ -149,17 +149,26 @@ const ProfileForm: React.FC<ProfileFormProps> = ({
 
       <FileUpload
         id="foto"
-        label="Upload Foto (JPG / JPEG)"
+        label="Upload Foto (JPG / JPEG); Max 2MB"
         accept=".jpg,.jpeg"
         onChange={onFotoChange}
       />
 
-      <FileUpload
-        id="dokumen"
-        label="Upload Dokumen Pendukung (PDF)"
-        accept=".pdf"
-        onChange={onDokumenChange}
-      />
+      <div className="flex flex-col gap-0">
+        <FileUpload
+          id="dokumen"
+          label="Upload Dokumen Pendukung (PDF); Max 2MB"
+          accept=".pdf"
+          onChange={onDokumenChange}
+        />
+        <p className="text-sm text-gray-500">
+          Silakan unggah seluruh dokumen persyaratan pendaftaran dengan cara
+          menggabungkan seluruh persyaratan ke dalam satu (1) file berformat PDF
+          yang tersusun rapi, kemudian unggah pada kolom yang tersedia; Pastikan
+          file yang dikirim jelas terbaca dan tidak melebihi batas ukuran yang
+          ditentukan.
+        </p>
+      </div>
 
       <Button
         type="submit"

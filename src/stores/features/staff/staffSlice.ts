@@ -49,15 +49,15 @@ export const inputNilai = createAsyncThunk(
   "staff/inputNilai",
   async (formData: FormData, { rejectWithValue }) => {
     try {
-      const res = await axios.post(
+const res = await axios.post(
         `${API_URL}/staff/nilai`,
         formData,
         {
-          ...getAuthHeader(),
-          headers: {
-            "Content-Type": "multipart/form-data",
+        headers: {
+            Authorization: `Bearer ${sessionStorage.getItem('accessToken')}`,
+            'Content-Type': 'multipart/form-data',
           },
-        },
+        }
       );
 
       toast.success("Nilai berhasil disimpan");

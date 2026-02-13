@@ -100,7 +100,7 @@ const Home = () => {
     if (!file) return;
 
     if (file.size > MAX_FILE_SIZE) {
-      alert("Ukuran foto maksimal 5MB");
+      alert("Ukuran foto maksimal 2MB");
       return;
     }
 
@@ -111,7 +111,7 @@ const Home = () => {
     if (!file) return;
 
     if (file.size > MAX_FILE_SIZE) {
-      alert("Ukuran dokumen maksimal 5MB");
+      alert("Ukuran dokumen maksimal 2 MB");
       return;
     }
 

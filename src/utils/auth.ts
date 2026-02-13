@@ -1,8 +1,10 @@
 export const getAccessToken = () =>
   sessionStorage.getItem("accessToken");
 
-export const getRole = () =>
-  sessionStorage.getItem("role");
+export const getRole = () => {
+  const role = sessionStorage.getItem("role");
+  return role === "admin" || role === "staff" || role === "pendaftar" ? role : null;
+};
 
 export const isLoggedIn = () =>
   !!getAccessToken();
