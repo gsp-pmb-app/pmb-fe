@@ -1,4 +1,5 @@
 import React, { useRef, useState } from "react";
+import { XMarkIcon } from "@heroicons/react/24/outline";
 
 interface FileUploadProps {
   id: string;
@@ -34,52 +35,84 @@ const FileUpload: React.FC<FileUploadProps> = ({
     onChange?.(selectedFile);
   };
 
+  const clearFile = () => {
+    setFile(null);
+    setPreview(null);
+
+    if (inputRef.current) {
+      inputRef.current.value = "";
+    }
+
+    onChange?.(null);
+  };
+
   return (
-    <div className="sm:col-span-4">
+    <div className="w-full">
       {label && (
         <label
           htmlFor={id}
-          className="block text-sm/6 font-medium text-gray-900"
+          className="block text-sm font-medium text-gray-900 mb-1"
         >
           {label}
           {required && <span className="ml-1 text-red-500">*</span>}
         </label>
       )}
 
-      <div className="mt-2">
-        <div
-          className="flex items-center gap-4 rounded-md bg-white px-3 py-2 outline outline-1 -outline-offset-1 outline-gray-300 focus-within:outline-2 focus-within:-outline-offset-2 focus-within:outline-indigo-600 cursor-pointer"
-          onClick={() => inputRef.current?.click()}
-        >
-          <input
-            ref={inputRef}
-            id={id}
-            type="file"
-            accept={accept}
-            required={required}
-            onChange={handleChange}
-            className="hidden"
+      <div
+        onClick={() => inputRef.current?.click()}
+        className={`flex items-center gap-3 rounded-lg border bg-white px-3 py-2.5 
+                    cursor-pointer transition shadow-sm
+                    ${
+                      file
+                        ? "border-indigo-500 ring-1 ring-indigo-500/20"
+                        : "border-gray-300 hover:border-indigo-400"
+                    }`}
+      >
+        <input
+          ref={inputRef}
+          id={id}
+          type="file"
+          accept={accept}
+          required={required}
+          onChange={handleChange}
+          className="hidden"
+        />
+
+        {/* Preview */}
+        {preview ? (
+          <img
+            src={preview}
+            alt="Preview"
+            className="h-12 w-12 rounded-md object-cover shrink-0"
           />
-
-          {/* Preview Image */}
-          {preview && (
-            <img
-              src={preview}
-              alt="Preview"
-              className="h-12 w-12 rounded object-cover"
-            />
-          )}
-
-          {/* File info */}
-          <div className="flex flex-col">
-            <span className="text-sm text-gray-900">
-              {file ? file.name : "Klik untuk upload file"}
-            </span>
-            <span className="text-xs text-gray-500">
-              {accept || "PDF / JPG / PNG"}
-            </span>
+        ) : (
+          <div className="h-12 w-12 rounded-md bg-gray-100 flex items-center justify-center text-gray-400 text-xs shrink-0">
+            FILE
           </div>
+        )}
+
+        {/* File Info */}
+        <div className="flex-1 min-w-0">
+          <p className="text-sm font-medium text-gray-900 truncate">
+            {file ? file.name : "Klik untuk upload file"}
+          </p>
+
+          <p className="text-xs text-gray-500">{accept || "PDF / JPG / PNG"}</p>
         </div>
+
+        {/* Clear Button */}
+        {file && (
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              clearFile();
+            }}
+            className="p-1 rounded hover:bg-gray-100 text-gray-400 hover:text-red-500 transition"
+          >
+            <XMarkIcon className="h-4 w-4" />
+          </button>
+        )}
       </div>
     </div>
   );

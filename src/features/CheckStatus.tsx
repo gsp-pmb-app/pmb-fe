@@ -87,7 +87,7 @@ export const CheckStatus = () => {
           </Button>
         </form>
       ) : (
-        <div className="w-full max-w-md bg-white p-6 rounded-lg shadow space-y-4">
+        <div className="w-full max-w-md space-y-4">
           <StatusView
             nomor_pendaftaran={data?.nomor_pendaftaran!}
             nama={data?.nama!}

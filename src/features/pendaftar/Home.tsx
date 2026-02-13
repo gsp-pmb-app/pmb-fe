@@ -208,6 +208,7 @@ const Home = () => {
             jadwal: jadwalUjianPendaftar,
             foto_path: profile?.foto_path!,
             tanggal_lahir: profile?.tanggal_lahir!,
+            status: profile?.status!,
           }}
           isStaff={false}
         />

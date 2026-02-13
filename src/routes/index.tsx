@@ -22,6 +22,8 @@ import {
 } from "../pages";
 
 export default function AppRoutes() {
+  const role = sessionStorage.getItem("role");
+
   return (
     <Routes>
       {/* ===== PUBLIC ===== */}
@@ -56,7 +58,20 @@ export default function AppRoutes() {
         <Route path="/staff/yudisium" element={<Yudisium />} />
       </Route>
 
-      <Route path="*" element={<Navigate to="/auth/login" replace />} />
+      <Route
+        path="*"
+        element={
+          role ? (
+            role === "pendaftar" ? (
+              <Navigate to="/home" replace />
+            ) : (
+              <Navigate to="/dashboard" replace />
+            )
+          ) : (
+            <Navigate to="/auth/login" replace />
+          )
+        }
+      />
     </Routes>
   );
 }

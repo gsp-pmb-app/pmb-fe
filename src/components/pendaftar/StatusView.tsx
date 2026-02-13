@@ -27,7 +27,7 @@ const StatusView: React.FC<StatusKelulusanProps> = ({
         PENGUMUMAN KELULUSAN PMB 2026
       </h2>
 
-      <div className="flex flex-col gap-6 p-8 border rounded-lg shadow-sm bg-white">
+      <div className="flex flex-col gap-6 p-8 rounded-lg shadow-sm bg-white">
         {isVerified ? (
           <>
             {" "}
@@ -74,7 +74,7 @@ const StatusView: React.FC<StatusKelulusanProps> = ({
             </div>
           </>
         ) : (
-          <p className="text-center">
+          <p className="text-center text-gray-500 text-sm">
             Hasil kelulusan ujian belum dapat dilihat.
           </p>
         )}
