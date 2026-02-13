@@ -3,8 +3,8 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { toast } from 'sonner';
 import { API_URL } from '../../../constants';
- import type { PendaftarState } from './type';
- import { getAuthHeader } from '../../../utils/auth';
+import type { PendaftarState } from './type';
+import { getAuthHeader } from '../../../utils/auth';
 
 const initialState: PendaftarState = {
   isLoading: false,
@@ -14,7 +14,7 @@ const initialState: PendaftarState = {
   status: null,
   error: null,
   errorUpload: null,
-  isLoadingUpload: false,
+  isLoadingUpload: false
 };
 
 // GET PROFILE

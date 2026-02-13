@@ -1,4 +1,5 @@
 export * from "./PendaftarPage";
+export * from "./CheckStatusPage";
 
 export * from "./admin/JadwalPage";
 export * from "./admin/ProdiPage";
@@ -15,3 +16,4 @@ export * from "./pendaftar/StatusKelulusanPage";
 
 export * from "./staff/NilaiPage";
 export * from "./staff/VerifikasiPage";
+export * from "./staff/YudisiumPage";

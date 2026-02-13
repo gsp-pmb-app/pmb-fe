@@ -21,7 +21,7 @@ interface ProdiItem {
 /* ================= PAGE ================= */
 export const Prodi = () => {
   const dispatch = useAppDispatch();
-  const prodiList = useAppSelector((state) => state.private.admin.prodi); // sesuaikan slice
+  const prodiList = useAppSelector((state) => state.private.admin.prodi.data); // sesuaikan slice
 
   /* ================= STATE ================= */
   const [openModal, setOpenModal] = useState(false);

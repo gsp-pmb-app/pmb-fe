@@ -1,1 +1,12 @@
 @import "tailwindcss";
+@source inline("bg-red-700 bg-green-600 bg-yellow-600 text-white border backdrop-blur-lg");
+
+/* Hilangkan background kuning autofill */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0px 1000px white inset;
+  -webkit-text-fill-color: #111827;
+  transition: background-color 9999s ease-in-out 0s;
+}

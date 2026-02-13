@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import {
-  getJadwal,
+  selectProdi,
+  selectJadwal,
   getProdi,
   getProfile,
   selectPendaftarProfile,
@@ -8,6 +9,8 @@ import {
   uploadDokumen,
   useAppDispatch,
   useAppSelector,
+  type SesiUjian,
+  getJadwal,
 } from "../../stores";
 import type { Option } from "../../components/SelectList";
 import ProfileForm from "../../components/pendaftar/FormProfile";
@@ -15,12 +18,13 @@ import ProfileView from "../../components/pendaftar/ProfileView";
 import Modal from "../../components/Modal";
 import { MAX_FILE_SIZE } from "../../constants";
 import { toast } from "sonner";
+import { formatJam } from "../../utils/formatJam";
 
 const Home = () => {
   const dispatch = useAppDispatch();
   const profile = useAppSelector(selectPendaftarProfile);
-  const prodiList = useAppSelector((state) => state.private.admin.prodi);
-  const jadwalList = useAppSelector((state) => state.private.admin.jadwal);
+  const prodiList = useAppSelector(selectProdi);
+  const jadwalList = useAppSelector(selectJadwal);
 
   /* ================= STATE ================= */
   const [form, setForm] = useState({
@@ -29,6 +33,7 @@ const Home = () => {
     pendidikan_institusi: "",
     pendidikan_jurusan: "",
     tahun_lulus: "",
+    tanggal_lahir: "",
   });
 
   const [jenjang, setJenjang] = useState<Option | null>(null);
@@ -43,9 +48,9 @@ const Home = () => {
 
   /* ================= EFFECT ================= */
   useEffect(() => {
-    dispatch(getProfile());
-    dispatch(getJadwal());
     dispatch(getProdi());
+    dispatch(getJadwal());
+    dispatch(getProfile());
   }, [dispatch]);
 
   useEffect(() => {
@@ -61,7 +66,8 @@ const Home = () => {
       no_tele: profile.no_tele,
       pendidikan_institusi: profile.pendidikan_institusi ?? "",
       pendidikan_jurusan: profile.pendidikan_jurusan ?? "",
-      tahun_lulus: profile.tahun_lulus ?? "",
+      tahun_lulus: String(profile.tahun_lulus) ?? "",
+      tanggal_lahir: profile.tanggal_lahir ?? "",
     });
   }, [profile]);
 
@@ -72,12 +78,6 @@ const Home = () => {
       label: item.nama_prodi,
       value: item.id,
     }));
-
-  const formatJam = (sesi: "pagi" | "siang") => {
-    if (sesi === "pagi") return "09:00";
-    if (sesi === "siang") return "13:00";
-    return "";
-  };
 
   const jadwalOptions: Option[] = jadwalList
     .filter((item) => item.prodiId === prodi?.value)
@@ -131,6 +131,7 @@ const Home = () => {
           prodiId: prodi?.value,
           jadwalUjianId: jadwal?.value,
           status: "aktif",
+          tanggal_lahir: form.tanggal_lahir,
         }),
       ).unwrap();
 
@@ -156,11 +157,12 @@ const Home = () => {
   const jadwalPendaftar = jadwalList.find(
     (item) => item.id === profile?.jadwalUjianId,
   );
-  const jadwalUjianPendaftar = `${jadwalPendaftar?.tanggal} ${formatJam(jadwalPendaftar?.sesi)} WIB`;
+  const jadwalUjianPendaftar = `${jadwalPendaftar?.tanggal} ${formatJam(jadwalPendaftar?.sesi!)} WIB`;
 
   const isFormValid =
     form.nama_lengkap.trim() !== "" &&
     form.no_tele.trim() !== "" &&
+    form.tanggal_lahir.trim() !== "" &&
     jenjang !== null &&
     prodi !== null &&
     jadwal !== null &&
@@ -196,17 +198,18 @@ const Home = () => {
       ) : (
         <ProfileView
           profile={{
-            nama_lengkap: profile?.nama_lengkap,
-            no_tele: profile?.no_tele,
-            pendidikan_jenjang: profile?.pendidikan_jenjang,
-            pendidikan_institusi: profile?.pendidikan_institusi,
-            pendidikan_jurusan: profile?.pendidikan_jurusan,
-            tahun_lulus: profile?.tahun_lulus,
-            prodi: prodiPendaftar?.nama_prodi,
+            nama_lengkap: profile?.nama_lengkap!,
+            no_tele: profile?.no_tele!,
+            pendidikan_jenjang: profile?.pendidikan_jenjang!,
+            pendidikan_institusi: profile?.pendidikan_institusi!,
+            pendidikan_jurusan: profile?.pendidikan_jurusan!,
+            tahun_lulus: String(profile?.tahun_lulus!),
+            prodi: prodiPendaftar?.nama_prodi!,
             jadwal: jadwalUjianPendaftar,
-            foto_path: profile?.foto_path,
+            foto_path: profile?.foto_path!,
+            tanggal_lahir: profile?.tanggal_lahir!,
           }}
-          kartuUjian={profile?.kartuUjian}
+          isStaff={false}
         />
       )}
 
