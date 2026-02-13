@@ -13,12 +13,13 @@ import {
   selectPendaftarById,
   selectPendaftarByIdLoading,
 } from "../../stores";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import ProfileView from "../../components/pendaftar/ProfileView";
 import { formatJam } from "../../utils/formatJam";
 import { Button } from "@headlessui/react";
 import { CheckIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import LoadingSpinner from "../../components/Spinner";
+import Modal from "../../components/Modal";
 
 export const Verifikasi = () => {
   const dispatch = useAppDispatch();
@@ -29,6 +30,11 @@ export const Verifikasi = () => {
   const prodiList = useAppSelector(selectProdi);
   const jadwalList = useAppSelector(selectJadwal);
 
+  const [openModal, setOpenModal] = useState(false);
+  const [selectedStatus, setSelectedStatus] = useState<
+    "verifikasi" | "ditolak" | null
+  >(null);
+
   useEffect(() => {
     if (id) {
       dispatch(getPendaftarById(id));
@@ -37,13 +43,17 @@ export const Verifikasi = () => {
     }
   }, [id, dispatch]);
 
-  const handleVerify = (status: "verifikasi" | "ditolak") => {
+  const handleConfirm = () => {
+    if (!selectedStatus) return;
+
     dispatch(
       verifikasiDokumen({
         id: id!,
-        status: status,
+        status: selectedStatus,
       }),
     );
+
+    setOpenModal(false);
   };
 
   const prodiPendaftar = prodiList.find(
@@ -53,12 +63,14 @@ export const Verifikasi = () => {
     (item) => item.id === pendaftar?.jadwalUjianId,
   );
   const jadwalUjianPendaftar = `${jadwalPendaftar?.tanggal} ${formatJam(jadwalPendaftar?.sesi!)} WIB`;
-  const fileUrl = pendaftar?.file_path || "/dummy.pdf";
+  const fileUrl = pendaftar?.file_path;
 
   return (
     <div className="mx-auto max-w-3xl rounded-lg bg-white p-6 shadow">
       {loading ? (
-        <LoadingSpinner />
+        <div className="flex justify-center items-center py-6">
+          <LoadingSpinner />
+        </div>
       ) : (
         <>
           <ProfileView
@@ -78,31 +90,59 @@ export const Verifikasi = () => {
           />
 
           <div className="mt-6">
-            <p className="text-gray-500">Dokumen Persyaratan:</p>
-            <iframe
-              src={fileUrl}
-              width="100%"
-              height="600px"
-              className="rounded border"
-            />
+            <p className="text-gray-500">
+              {fileUrl
+                ? "Dokumen Persyaratan:"
+                : "Tidak ada dokumen persyaratan"}
+            </p>
+            {fileUrl && (
+              <iframe
+                src={fileUrl}
+                width="100%"
+                height="600px"
+                className="rounded border"
+              />
+            )}
           </div>
           <div className="flex flex-row gap-4 justify-end items-center mt-6">
             <Button
-              className="w-36 rounded-md bg-green-600 px-4 py-2 text-white font-medium hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 disabled:opacity-50 flex justify-center items-center gap-1"
-              onClick={() => handleVerify("verifikasi")}
+              className="w-36 rounded-md bg-green-600 px-4 py-2 text-white font-medium hover:bg-green-700 flex justify-center items-center gap-1 cursor-pointer"
+              onClick={() => {
+                setSelectedStatus("verifikasi");
+                setOpenModal(true);
+              }}
             >
               <CheckIcon height={16} width={16} /> Verifikasi
             </Button>
+
             <Button
-              className="w-36 rounded-md bg-red-600 px-4 py-2 text-white font-medium hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 disabled:opacity-50 flex justify-center items-center gap-1"
-              onClick={() => handleVerify("ditolak")}
+              className="w-36 rounded-md bg-red-600 px-4 py-2 text-white font-medium hover:bg-red-700 flex justify-center items-center gap-1 cursor-pointer"
+              onClick={() => {
+                setSelectedStatus("ditolak");
+                setOpenModal(true);
+              }}
             >
-              <XMarkIcon height={16} width={16} />
-              Tolak
+              <XMarkIcon height={16} width={16} /> Tolak
             </Button>
           </div>
         </>
       )}
+
+      <Modal
+        open={openModal}
+        title="Konfirmasi Verifikasi"
+        onClose={() => setOpenModal(false)}
+        onConfirm={handleConfirm}
+        confirmText={
+          selectedStatus === "verifikasi" ? "Ya, Verifikasi" : "Ya, Tolak"
+        }
+      >
+        Apakah kamu yakin ingin{" "}
+        <span className="font-semibold">
+          {selectedStatus === "verifikasi" ? "memverifikasi" : "menolak"}
+        </span>{" "}
+        dokumen pendaftar ini?
+      </Modal>
     </div>
   );
 };

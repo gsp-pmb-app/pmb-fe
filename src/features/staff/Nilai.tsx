@@ -66,7 +66,7 @@ export const Nilai = () => {
           name="nomor_pendaftaran"
           value={form.nomor_pendaftaran}
           onChange={handleChange}
-          placeholder="Contoh: PMB002028455"
+          placeholder="Masukkan nomor pendaftaran"
           required
         />
 
@@ -77,13 +77,13 @@ export const Nilai = () => {
           type="number"
           value={form.nilai}
           onChange={handleChange}
-          placeholder="Contoh: 85"
+          placeholder="Masukkan nilai ujian"
           required
         />
 
         <FileUpload
           id="file_nilai"
-          label="Upload File Nilai (PDF)"
+          label="Upload File Nilai (PDF); Max 2MB"
           accept=".pdf"
           onChange={(f) => setFile(f)}
         />

@@ -21,8 +21,8 @@ export const menuByRole = {
   admin: [
     { name: "Pendaftar", href: "/dashboard", icon: UsersIcon },
     { name: "Program Studi", href: "/admin/prodi", icon: AcademicCapIcon },
-    { name: "Jadwal", href: "/admin/jadwal", icon: CalendarIcon },
     { name: "Ruangan", href: "/admin/ruangan", icon: BuildingOfficeIcon },
+    { name: "Jadwal", href: "/admin/jadwal", icon: CalendarIcon },
   ],
   staff: [
     {

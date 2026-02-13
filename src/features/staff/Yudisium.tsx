@@ -111,15 +111,14 @@ export const Yudisium = () => {
   return (
     <div className="space-y-4">
       <h2 className="text-lg font-semibold">Data Yudisium</h2>
-
-      {/* FILTER */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
+      <div className="flex flex-wrap items-end gap-3">
         <SelectList
           id="status"
           label="Status"
           value={statusFilter!}
           onChange={setStatusFilter}
           options={statusOptions}
+          className="w-48"
         />
 
         <SelectList
@@ -128,6 +127,7 @@ export const Yudisium = () => {
           value={jenjangFilter!}
           onChange={setJenjangFilter}
           options={jenjangOptions}
+          className="w-48"
         />
 
         <SelectList
@@ -136,6 +136,7 @@ export const Yudisium = () => {
           value={prodiFilter!}
           onChange={setProdiFilter}
           options={prodiOptions}
+          className="w-48"
         />
 
         <button
@@ -147,7 +148,9 @@ export const Yudisium = () => {
       </div>
 
       {loading ? (
-        <LoadingSpinner />
+        <div className="flex justify-center items-center py-6">
+          <LoadingSpinner />
+        </div>
       ) : (
         <Table
           columns={columns}
